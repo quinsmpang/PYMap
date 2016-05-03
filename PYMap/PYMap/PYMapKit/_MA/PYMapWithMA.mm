@@ -45,7 +45,7 @@ typedef NS_ENUM(NSUInteger, MAAnonotationType) {
 @synthesize annotationSelectAtUid = _annotationSelectAtUid;
 @synthesize annotationDeSelectAtUid = _annotationDeSelectAtUid;
 @synthesize annotationCalloutViewWithUid = _annotationCalloutViewWithUid;
-@synthesize annotationImageWithUid = _annotationImageWithUid;
+@synthesize viewForAnnotation = _viewForAnnotation;
 @synthesize mapDelegate = _mapDelegate;
 
 - (instancetype)init
@@ -491,12 +491,6 @@ typedef NS_ENUM(NSUInteger, MAAnonotationType) {
             [annotationView changeCalloutView:calloutView];
         }
         
-        if (self.annotationImageWithUid) {
-            UIImage* image = self.annotationImageWithUid(aAnnotation._uid_);
-            if (image) {
-                annotationView.image = image;
-            }
-        }
     }
 }
 

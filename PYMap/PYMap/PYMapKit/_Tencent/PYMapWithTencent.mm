@@ -485,12 +485,6 @@ typedef NS_ENUM(NSUInteger, QAnonotationType) {
             [annotationView changeCalloutView:calloutView];
         }
         
-        if (self.annotationImageWithUid) {
-            UIImage* image = self.annotationImageWithUid(aAnnotation._uid_);
-            if (image) {
-                annotationView.image = image;
-            }
-        }
     }
 }
 
