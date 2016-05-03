@@ -9,9 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "PYMapGeometry.h"
 #import "PYAnnotation.h"
+#import "PYMapKit_Block.h"
+#import "PYMapKit_Delegate.h"
 
-@protocol PYMapDelegate;
-@protocol PYMapKitProtocal <NSObject>
+@protocol PYMapKitProtocal <NSObject, PYMapKit_Block, PYMapKit_Delegate>
 
 /*!
  *  @brief  当前地图视图
@@ -31,7 +32,7 @@
 - (PYCoordinateRegion)getMapRegion;
 
 /**
- *  @brief 根据当前地图View的窗口大小调整传入的region，返回适合当前地图窗口显示的region，调整过程会保证中心点不改变
+ *  @brief 根据当前地图View的窗口大小调整传入的region，返回适合当前地图窗口显示的region
  *  @param region 待调整的经纬度范围
  *  @return 调整后适合当前地图窗口显示的经纬度范围
  */
@@ -43,7 +44,8 @@
  *  @param region   要设定的地图范围，用经纬度的方式表示
  *  @param animated 是否采用动画
  */
-- (void)setRegion:(PYCoordinateRegion)region animated:(BOOL)animated;
+- (void)setRegion:(PYCoordinateRegion)region
+         animated:(BOOL)animated;
 
 
 /*!
@@ -52,7 +54,8 @@
  *  @param coordinate 要设定的地图中心点经纬度
  *  @param animated   是否采用动画
  */
-- (void)setCenterCoordinate:(CLLocationCoordinate2D)coordinate animated:(BOOL)animated;
+- (void)setCenterCoordinate:(CLLocationCoordinate2D)coordinate
+                   animated:(BOOL)animated;
 
 
 /*!
@@ -65,6 +68,28 @@
 - (void)setCenterCoordinate:(CLLocationCoordinate2D)coordinate
                   zoomLevel:(double)newZoomLevel
                    animated:(BOOL)animated;
+
+
+#pragma mark - ScrollEnable ZoomEnable
+
+/*!
+ *  @brief  是否支持平移, 默认为YES
+ */
+- (void)setScrollEnabled:(BOOL)scrollEnabled;
+
+/*!
+ *  @brief  是否支持缩放, 默认为YES
+ */
+- (void)setZoomEnabled:(BOOL)zoomEnabled;
+
+/*!
+ *  @brief  设置当前地图缩放级别
+ *
+ *  @param zoomScale    目标缩放级别与当前级别的比例
+ *  @param animated     是否采用动画
+ */
+- (void)setZoomScale:(double)zoomScale animated:(BOOL)animated;
+
 
 
 #pragma mark - Annotation
@@ -141,90 +166,6 @@
  *  @brief  移除覆盖视图
  */
 - (void)removeRouteView:(NSString *)uid;
-
-
-
-#pragma mark - ScrollEnable ZoomEnable
-
-/*!
- *  @brief  是否支持平移, 默认为YES
- */
-- (void)setScrollEnabled:(BOOL)scrollEnabled;
-
-/*!
- *  @brief  是否支持缩放, 默认为YES
- */
-- (void)setZoomEnabled:(BOOL)zoomEnabled;
-
-/*!
- *  @brief  设置当前地图缩放级别
- *
- *  @param zoomScale    目标缩放级别与当前级别的比例
- *  @param animated     是否采用动画
- */
-- (void)setZoomScale:(double)zoomScale animated:(BOOL)animated;
-
-
-
-
-#pragma mark - Delegate;
-@property (nonatomic, assign) id<PYMapDelegate> mapDelegate;
-
-#pragma mark  - callback
-/*!
- *  @brief 回调block,获取标注图片
- */
-@property (nonatomic, copy) UIImage *(^annotationImageWithUid)(NSString *);
-/*!
- *  @brief 回调block,获取气泡视图调用
- */
-@property (nonatomic, copy) UIView *(^annotationCalloutViewWithUid)(NSString *);
-/*!
- *  @brief 回调block,点击标注时候调用
- */
-@property (nonatomic, copy) void (^annotationSelectAtUid)(NSString *);
-/*!
- *  @brief 回调block,取消点击标注时候调用
- */
-@property (nonatomic, copy) void (^annotationDeSelectAtUid)(NSString *);
-
-@end
-
-
-@protocol  PYMapDelegate <NSObject>
-@optional
-/*!
- *  @brief  地图区域改变完成时会调用此接口
- *
- *  @param mapView  地图view
- *  @param region 完成后的区域
- */
-- (void)pyMap:(id<PYMapKitProtocal>)map regionDidChangeTo:(PYCoordinateRegion)region;
-
-/*!
- *  @brief  地图区域改变完成时会调用此接口
- *
- *  @param mapView  地图view
- *  @param region 完成后的区域
- */
-- (void)pyMap:(id<PYMapKitProtocal>)map regionDidChangeTo:(PYCoordinateRegion)region withAnimated:(BOOL)animated;
-
-/*!
- *  @brief  地图区域即将改变时会调用此接口
- *
- *  @param mapView  地图view
- *  @param region 开始时候的区域
- */
-- (void)pyMap:(id<PYMapKitProtocal>)map regionWillChangeFrom:(PYCoordinateRegion)region withAnimated:(BOOL)animated;
-
-
-/**
- *  @brief  自定义视图
- *
- *  @param map 地图view
- *  @param uid 需要显示视图的标识
- */
-- (UIView *)pyMap:(id<PYMapKitProtocal>)map viewForAnnotationId:(NSString *)uid;
 
 
 @end

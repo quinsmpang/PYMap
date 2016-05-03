@@ -25,23 +25,23 @@
 /*!
  *  @brief  驾车路线规划条件
  */
-typedef NS_ENUM(NSUInteger, PYDrivingRoutePolicyType)
+typedef NS_ENUM(NSUInteger, PYDrivingRoutePolicy)
 {
-    PYDrivingRoutePolicyType_LeastTime = 0,     //省时
-    PYDrivingRoutePolicyType_LeastFee = 1,      //省钱
-    PYDrivingRoutePolicyType_LeastDistance = 2, //距离最短
-    PYDrivingRoutePolicyType_RealTraffic = 3,   //综合最优
+    PYDrivingRoutePolicy_LeastTime = 0,     //省时
+    PYDrivingRoutePolicy_LeastFee = 1,      //省钱
+    PYDrivingRoutePolicy_LeastDistance = 2, //距离最短
+    PYDrivingRoutePolicy_RealTraffic = 3,   //综合最优
 };
 
 
 /*!
  *  @brief  公交路线规划条件
  */
-typedef NS_ENUM(NSUInteger, PYBusingRoutePolicyType)
+typedef NS_ENUM(NSUInteger, PYBusingRoutePolicy)
 {
-    PYBusingRoutePolicyTypeLeastTime = 0,          //省时
-    PYBusingRoutePolicyTypeLeastTransfer = 1,      //少换乘
-    PYBusingRoutePolicyTypeLeastWalking = 2,       //少步行
+    PYBusingRoutePolicy_LeastTime = 0,          //省时
+    PYBusingRoutePolicy_LeastTransfer = 1,      //少换乘
+    PYBusingRoutePolicy_LeastWalking = 2,       //少步行
 };
 
 

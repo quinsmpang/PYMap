@@ -1,12 +1,12 @@
 //
-//  PYMapSearchService.m
-//  YR
+//  PYMapSearchServiceFactory.m
+//  PYMap
 //
-//  Created by YR on 15/10/16.
-//  Copyright © 2015年 YR. All rights reserved.
+//  Created by yr on 16/5/3.
+//  Copyright © 2016年 yr. All rights reserved.
 //
 
-#import "PYMapSearchServiceKit.h"
+#import "PYMapSearchServiceFactory.h"
 #import "PYMapApiKey.h"
 
 #ifdef _Map_Tencent
@@ -43,7 +43,7 @@
 #ifdef _Map_MA
     [[AMapSearchServices sharedServices] setApiKey:PYMapApiKey];
 #endif
-
+    
     return nil;
 }
 

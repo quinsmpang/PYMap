@@ -1,14 +1,15 @@
 //
-//  PYMapWithMA.m
+//  PYMapWithTencent.m
+//  QMapKitSample
 //
 //  Created by YR on 15/8/19.
 //  Copyright (c) 2015年 YR. All rights reserved.
 //
-#ifdef _Map_MA
+#ifdef _Map_Tencent
 
-#import "PYMapWithMA.h"
-#import "PYMAImageAnnotation.h"
-#import "MA+Add.h"
+#import "PYMapWithTencent.h"
+#import "PYTencentImageAnnotation.h"
+#import "QMK+Add.h"
 
 
 /**
@@ -16,28 +17,28 @@
  *
  *  地图显示标注视图类型
  */
-typedef NS_ENUM(NSUInteger, MAAnonotationType) {
-    MAAnonotationType_Normal,    //只有图片
-    MAAnonotationType_Callout,   //带有气泡
+typedef NS_ENUM(NSUInteger, QAnonotationType) {
+    QAnonotationType_Normal,    //只有图片
+    QAnonotationType_Callout, //带callout的气泡
 };;
 
 
 @interface PYPointAnnotationSave : NSObject
 
-@property(nonatomic,strong) MAPointAnnotation* annotation;
+@property(nonatomic,strong) QPointAnnotation* annotation;
 @property(nonatomic,strong) NSString*   uid;
 @property(nonatomic,strong) NSString*   imageName;
-@property(nonatomic,assign) MAAnonotationType type;
+@property(nonatomic,assign) QAnonotationType type;
 
 @end
 
 
-@interface PYMapWithMA () <MAMapViewDelegate>
+@interface PYMapWithTencent () <QMapViewDelegate>
 @end
 
 
-@implementation PYMapWithMA {
-    MAMapView            *_mapView;
+@implementation PYMapWithTencent {
+    QMapView            *_mapView;
     NSMutableDictionary *_overlayInfo;
     NSMutableDictionary *_annotationInfo;
 }
@@ -51,7 +52,7 @@ typedef NS_ENUM(NSUInteger, MAAnonotationType) {
 - (instancetype)init
 {
     if (self = [super init]) {
-        _mapView        = [[MAMapView alloc] init];
+        _mapView        = [[QMapView alloc] init];
         _overlayInfo    = [[NSMutableDictionary alloc] init];
         _annotationInfo = [[NSMutableDictionary alloc] init];
 
@@ -75,13 +76,13 @@ typedef NS_ENUM(NSUInteger, MAAnonotationType) {
 
 
 /*!
- *  @brief  向地图窗口添加标注
+ *  @brief  向地图窗口添加标注，需要实现QMapViewDelegate的-mapView:viewForAnnotation:函数来生成标注对应的View
  *
  *  @param annotation 要添加的标注
  */
 - (void)addAnnotation:(id <PYAnnotation>)annotation imageName:(NSString *)imgStr uid:(NSString *)uid
 {
-    [self _addAnnotation:annotation imageName:imgStr uid:uid withType:MAAnonotationType_Normal];
+    [self _addAnnotation:annotation imageName:imgStr uid:uid withType:QAnonotationType_Normal];
 
 }
 
@@ -91,17 +92,17 @@ typedef NS_ENUM(NSUInteger, MAAnonotationType) {
                          imageName:(NSString *)imgStr
                                uid:(NSString *)uid{
    
-    [self _addAnnotation:annotation imageName:imgStr uid:uid withType:MAAnonotationType_Callout];
+    [self _addAnnotation:annotation imageName:imgStr uid:uid withType:QAnonotationType_Callout];
 }
 
 - (void)_addAnnotation:(id<PYAnnotation>)annotation
                         imageName:(NSString *)imgStr
                               uid:(NSString *)uid
-                         withType:(MAAnonotationType)type{
+                         withType:(QAnonotationType)type{
    
     if (uid == nil) return;
     
-    MAPointAnnotation *pointAnnotation = [[MAPointAnnotation alloc] init];
+    QPointAnnotation *pointAnnotation = [[QPointAnnotation alloc] init];
     pointAnnotation._uid_      = uid;
     pointAnnotation.coordinate = [annotation coordinate];
     
@@ -161,21 +162,21 @@ typedef NS_ENUM(NSUInteger, MAAnonotationType) {
  */
 - (void)setRegion:(PYCoordinateRegion)region animated:(BOOL)animated
 {
-    MACoordinateRegion aRegin = MACoordinateRegionMake(region.center,
-                                                     MACoordinateSpanMake(region.span.latitudeDelta, region.span.longitudeDelta));
+    QCoordinateRegion qRegin = QCoordinateRegionMake(region.center,
+                                                     QCoordinateSpanMake(region.span.latitudeDelta, region.span.longitudeDelta));
 
-    [_mapView setRegion:aRegin animated:animated];
+    [_mapView setRegion:qRegin animated:animated];
 }
 
 
 - (PYCoordinateRegion)regionThatFits:(PYCoordinateRegion)region
 {
-    MACoordinateRegion aRegin = MACoordinateRegionMake(region.center,
-                                                     MACoordinateSpanMake(region.span.latitudeDelta, region.span.longitudeDelta));
-    aRegin = [_mapView regionThatFits:aRegin];
+    QCoordinateRegion qRegin = QCoordinateRegionMake(region.center,
+                                                     QCoordinateSpanMake(region.span.latitudeDelta, region.span.longitudeDelta));
+    qRegin = [_mapView regionThatFits:qRegin];
 
-    return PYCoordinateRegionMake(aRegin.center,
-                                  PYCoordinateSpanMake(aRegin.span.latitudeDelta, aRegin.span.longitudeDelta));
+    return PYCoordinateRegionMake(qRegin.center,
+                                  PYCoordinateSpanMake(qRegin.span.latitudeDelta, qRegin.span.longitudeDelta));
 }
 
 
@@ -189,7 +190,7 @@ typedef NS_ENUM(NSUInteger, MAAnonotationType) {
 {
     if (uid == nil) return;
     
-    MAMapPoint *temppoints = new MAMapPoint[[coordinates count]];
+    QMapPoint *temppoints = new QMapPoint[[coordinates count]];
     for (int i = 0; i < [coordinates count]; i++) {
         NSString *loc   = [coordinates objectAtIndex:i];
         NSArray  *split = [loc componentsSeparatedByString:@","];
@@ -199,12 +200,12 @@ typedef NS_ENUM(NSUInteger, MAAnonotationType) {
         CLLocationCoordinate2D coor;
         coor.longitude = [lon floatValue];
         coor.latitude  = [lat floatValue];
-        MAMapPoint pt = MAMapPointForCoordinate(coor);
+        QMapPoint pt = QMapPointForCoordinate(coor);
         temppoints[i].x = pt.x;
         temppoints[i].y = pt.y;
     }
     
-    MAPolygon *overlay = [MAPolygon polygonWithPoints:temppoints count:coordinates.count];
+    QPolygon *overlay = [QPolygon polygonWithPoints:temppoints count:coordinates.count];
     overlay._uid_ = uid;
     
     NSDictionary *dicInfo = [NSDictionary dictionaryWithObjectsAndKeys:strokeColor, @"strokeColor"
@@ -228,17 +229,17 @@ typedef NS_ENUM(NSUInteger, MAAnonotationType) {
 {
     if (uid == nil) return;
 
-    MAMapPoint *temppoints = new MAMapPoint[[coordinates count]];
+    QMapPoint *temppoints = new QMapPoint[[coordinates count]];
     for (int i = 0; i < [coordinates count]; i++) {
         CLLocation *loc   = [coordinates objectAtIndex:i];
         NSAssert([loc isKindOfClass:[CLLocation class]], @"Coordinate is CLLocation Object");
         
-        MAMapPoint pt = MAMapPointForCoordinate(loc.coordinate);
+        QMapPoint pt = QMapPointForCoordinate(loc.coordinate);
         temppoints[i].x = pt.x;
         temppoints[i].y = pt.y;
     }
 
-    MAPolyline* line = [MAPolyline polylineWithPoints:temppoints count:coordinates.count];
+    QPolyline* line = [QPolyline polylineWithPoints:temppoints count:coordinates.count];
     line._uid_ = uid;
 
     NSDictionary *dicInfo = [NSDictionary dictionaryWithObjectsAndKeys
@@ -290,9 +291,7 @@ typedef NS_ENUM(NSUInteger, MAAnonotationType) {
  */
 - (void)setCenterCoordinate:(CLLocationCoordinate2D)coordinate zoomLevel:(double)newZoomLevel animated:(BOOL)animated{
 
-//    [_mapView setCenterCoordinate:coordinate zoomLevel:newZoomLevel animated:animated];
-    [_mapView setCenterCoordinate:coordinate];
-    [_mapView setZoomLevel:newZoomLevel  animated:animated];
+    [_mapView setCenterCoordinate:coordinate zoomLevel:newZoomLevel animated:animated];
 }
 
 -(double)getZoomLevel{
@@ -320,15 +319,15 @@ typedef NS_ENUM(NSUInteger, MAAnonotationType) {
  *
  *  @return 指定标注对应的view
  */
-- (MAOverlayView *)mapView:(MAMapView *)mapView viewForOverlay:(id <MAOverlay>)overlay
+- (QOverlayView *)mapView:(QMapView *)mapView viewForOverlay:(id <QOverlay>)overlay
 {
-    if ([overlay isKindOfClass:[MAShape class]]) {
-        MAShape* shape = (MAShape*)overlay;
+    if ([overlay isKindOfClass:[QShape class]]) {
+        QShape* shape = (QShape*)overlay;
         NSString* uid = shape._uid_;
         
         NSDictionary *dic = [_overlayInfo objectForKey:uid];
         if (dic && [[dic objectForKey:@"shape"] isEqualToString:@"Polygon"]) {
-            MAPolygonView *cutomView = [[MAPolygonView alloc] initWithOverlay:overlay];
+            QPolygonView *cutomView = [[QPolygonView alloc] initWithOverlay:overlay];
             
             cutomView.strokeColor = [dic objectForKey:@"strokeColor"];
             cutomView.fillColor   = [dic objectForKey:@"fillColor"];
@@ -336,7 +335,7 @@ typedef NS_ENUM(NSUInteger, MAAnonotationType) {
             
             return cutomView;
         }else if (dic && [[dic objectForKey:@"shape"] isEqualToString:@"Polyline"]){
-            MAPolylineView *cutomView = [[MAPolylineView alloc] initWithOverlay:overlay];
+            QPolylineView *cutomView = [[QPolylineView alloc] initWithOverlay:overlay];
             
             cutomView.strokeColor = [dic objectForKey:@"strokeColor"];
             cutomView.lineWidth   = [[dic objectForKey:@"lineWidth"] floatValue];
@@ -354,26 +353,26 @@ typedef NS_ENUM(NSUInteger, MAAnonotationType) {
 
 
 // 根据anntation生成对应的View
-- (MAAnnotationView *)mapView:(MAMapView *)mapView viewForAnnotation:(id <MAAnnotation>)annotation
+- (QAnnotationView *)mapView:(QMapView *)mapView viewForAnnotation:(id <QAnnotation>)annotation
 {
-    if ([annotation isKindOfClass:[MAPointAnnotation class]]) {
+    if ([annotation isKindOfClass:[QPointAnnotation class]]) {
         
-        MAPointAnnotation* pointAnnotation = (MAPointAnnotation*)annotation;
+        QPointAnnotation* pointAnnotation = annotation;
         NSString* uid = pointAnnotation._uid_;
         
-        PYMAImageAnnotation *annotationView = (PYMAImageAnnotation *)[mapView dequeueReusableAnnotationViewWithIdentifier:uid];
+        PYTencentImageAnnotation *annotationView = (PYTencentImageAnnotation *)[mapView dequeueReusableAnnotationViewWithIdentifier:uid];
         
         if (annotationView == nil) {
-            annotationView = [[PYMAImageAnnotation alloc] initWithAnnotation:annotation reuseIdentifier:uid];
+            annotationView = [[PYTencentImageAnnotation alloc] initWithAnnotation:annotation reuseIdentifier:uid];
         }
        
         PYPointAnnotationSave *annotationSave = [_annotationInfo objectForKey:uid];
         annotationView.other = uid;
         
         //动画annotation
-        if ([self.mapDelegate respondsToSelector:@selector(pyMap:viewForAnnotationId:)]) {
+        if ([self.mapDelegate respondsToSelector:@selector(pyMap:viewForAnnotationWithId:)]) {
             
-            UIView* showView = [self.mapDelegate pyMap:self viewForAnnotationId:uid];
+            UIView* showView = [self.mapDelegate pyMap:self viewForAnnotationWithId:uid];
             if (nil == showView) return nil;
             [annotationView setShowView:showView];
         
@@ -385,7 +384,7 @@ typedef NS_ENUM(NSUInteger, MAAnonotationType) {
             annotationView.image = [UIImage imageNamed:imageName];
         }
         
-        if (annotationSave.type == MAAnonotationType_Callout) {
+        if (annotationSave.type == QAnonotationType_Callout) {
            
             if (self.annotationCalloutViewWithUid) {
                 UIView* calloutView = self.annotationCalloutViewWithUid(uid);
@@ -401,29 +400,29 @@ typedef NS_ENUM(NSUInteger, MAAnonotationType) {
 }
 
 
--(void)mapView:(MAMapView *)mapView didSelectAnnotationView:(MAAnnotationView *)view{
+-(void)mapView:(QMapView *)mapView didSelectAnnotationView:(QAnnotationView *)view{
 
-    if (![view isKindOfClass:[PYMAImageAnnotation class]]) return;
+    if (![view isKindOfClass:[PYTencentImageAnnotation class]]) return;
     
     if (self.annotationSelectAtUid) {
-        self.annotationSelectAtUid(((PYMAImageAnnotation*)view).other);
+        self.annotationSelectAtUid(((PYTencentImageAnnotation*)view).other);
     }
 }
 
 
 
--(void)mapView:(MAMapView *)mapView didDeselectAnnotationView:(MAAnnotationView *)view{
+-(void)mapView:(QMapView *)mapView didDeselectAnnotationView:(QAnnotationView *)view{
 
-    if (![view isKindOfClass:[PYMAImageAnnotation class]]) return;
+    if (![view isKindOfClass:[PYTencentImageAnnotation class]]) return;
     
     if (self.annotationDeSelectAtUid) {
-        self.annotationDeSelectAtUid(((PYMAImageAnnotation*)view).other);
+        self.annotationDeSelectAtUid(((PYTencentImageAnnotation*)view).other);
     }
 
 }
 
 
--(void)mapView:(MAMapView *)mapView regionDidChangeAnimated:(BOOL)animated{
+-(void)mapView:(QMapView *)mapView regionDidChangeAnimated:(BOOL)animated{
     
     PYCoordinateSpan  span = PYCoordinateSpanMake(mapView.region.span.latitudeDelta,
                                                   mapView.region.span.longitudeDelta);
@@ -435,13 +434,10 @@ typedef NS_ENUM(NSUInteger, MAAnonotationType) {
         [_mapDelegate pyMap:self regionDidChangeTo:region withAnimated:animated];
     }
     
-    if ([_mapDelegate respondsToSelector:@selector(pyMap:regionDidChangeTo:)]) {
-        [_mapDelegate pyMap:self regionDidChangeTo:region];
-    }
 }
 
 
--(void)mapView:(MAMapView *)mapView regionWillChangeAnimated:(BOOL)animated{
+-(void)mapView:(QMapView *)mapView regionWillChangeAnimated:(BOOL)animated{
 
     if (![_mapDelegate respondsToSelector:@selector(pyMap:regionWillChangeFrom:withAnimated:)]) return;
     
@@ -471,23 +467,17 @@ typedef NS_ENUM(NSUInteger, MAAnonotationType) {
 }
 
 
-- (void)removeRouteView:(NSString *)uid{
-
-    [self removeOverlayView:uid];
-}
-
-
 - (void)updateCallout{
 
-    for (MAPointAnnotation* aAnnotation in _mapView.annotations) {
+    for (QPointAnnotation* aAnnotation in _mapView.annotations) {
         
-        if (![aAnnotation isKindOfClass:[MAPointAnnotation class]]) continue;
+        if (![aAnnotation isKindOfClass:[QPointAnnotation class]]) continue;
         
         PYPointAnnotationSave *annotationSave = [_annotationInfo objectForKey:aAnnotation._uid_];
-        if (annotationSave.type != MAAnonotationType_Callout) continue;
+        if (annotationSave.type != QAnonotationType_Callout) continue;
         
-        PYMAImageAnnotation *annotationView  = (PYMAImageAnnotation*)[_mapView viewForAnnotation:aAnnotation];
-        if (![annotationView isKindOfClass:[PYMAImageAnnotation class]]) continue;
+        PYTencentImageAnnotation *annotationView  = (PYTencentImageAnnotation*)[_mapView viewForAnnotation:aAnnotation];
+        if (![annotationView isKindOfClass:[PYTencentImageAnnotation class]]) continue;
         
        
         if (self.annotationCalloutViewWithUid) {

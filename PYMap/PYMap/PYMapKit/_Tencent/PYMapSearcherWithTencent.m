@@ -41,19 +41,13 @@
 
 
 /*根据关键字发起检索。*/
-- (void)searchKeyword:(NSString *)keyword
-                 city:(NSString *)city
-            pageIndex:(NSUInteger)pageIndex
-         pageCapacity:(NSUInteger)pageCapacity
+- (void)searchPOIWithKeyword:(NSString *)keyword city:(NSString *)city
 {
     QMSPoiSearchOption *poiSearchOption = [QMSPoiSearchOption new];
     
     [poiSearchOption setKeyword:keyword];
-    [poiSearchOption setPage_index:pageIndex];
-    [poiSearchOption setPage_size:pageCapacity];
     [poiSearchOption setBoundaryByRegionWithCityName:city autoExtend:NO];
     
-    //        [_poiSearchOption setFilterByCategories:@"房产小区",nil];
     [_mapSearcher searchWithPoiSearchOption:poiSearchOption];
 }
 
@@ -71,23 +65,23 @@
 /*搜驾车路径*/
 -(void)searchDrivingRouteWithFromCoordinate:(CLLocationCoordinate2D)from
                                toCoordinate:(CLLocationCoordinate2D)to
-                                 policyType:(PYDrivingRoutePolicyType)type
+                                 policyType:(PYDrivingRoutePolicy)type
 {
     QMSDrivingRouteSearchOption* aDriSearchOption = [QMSDrivingRouteSearchOption new];
     [aDriSearchOption setFromCoordinate:from];
     [aDriSearchOption setToCoordinate:to];
     QMSDrivingRoutePolicyType qType;
     switch (type) {
-        case PYDrivingRoutePolicyType_LeastDistance:
+        case PYDrivingRoutePolicy_LeastDistance:
             qType = QMSDrivingRoutePolicyTypeLeastDistance;
             break;
-        case PYDrivingRoutePolicyType_LeastFee:
+        case PYDrivingRoutePolicy_LeastFee:
             qType = QMSDrivingRoutePolicyTypeLeastFee;
             break;
-        case PYDrivingRoutePolicyType_LeastTime:
+        case PYDrivingRoutePolicy_LeastTime:
             qType = QMSDrivingRoutePolicyTypeLeastTime;
             break;
-        case PYDrivingRoutePolicyType_RealTraffic:
+        case PYDrivingRoutePolicy_RealTraffic:
             qType = QMSDrivingRoutePolicyTypeRealTraffic;
             break;
         default:
@@ -100,20 +94,20 @@
 /*搜公交路径*/
 -(void)searchBusingRouteWithFromCoordinate:(CLLocationCoordinate2D)from
                               toCoordinate:(CLLocationCoordinate2D)to
-                                policyType:(PYBusingRoutePolicyType)type
+                                policyType:(PYBusingRoutePolicy)type
 {
     QMSBusingRouteSearchOption* aBusSearchOption = [QMSBusingRouteSearchOption new];
     [aBusSearchOption setFromCoordinate:from];
     [aBusSearchOption setToCoordinate:to];
     QMSBusingRoutePolicyType qType;
     switch (type) {
-        case PYBusingRoutePolicyTypeLeastTime:
+        case PYBusingRoutePolicy_LeastTime:
             qType = QMSBusingRoutePolicyTypeLeastTime;
             break;
-        case PYBusingRoutePolicyTypeLeastTransfer:
+        case PYBusingRoutePolicy_LeastTransfer:
             qType = QMSBusingRoutePolicyTypeLeastTransfer;
             break;
-        case PYBusingRoutePolicyTypeLeastWalking:
+        case PYBusingRoutePolicy_LeastWalking:
             qType = QMSBusingRoutePolicyTypeLeastWalking;
             break;
         default:

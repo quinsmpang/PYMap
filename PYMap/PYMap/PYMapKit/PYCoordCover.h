@@ -10,8 +10,6 @@
 #import <CoreLocation/CoreLocation.h>
 
 /**
- *  @author YangRui, 15/8/21
- *
  *  坐标体系转换工具类
  */
 @interface PYCoordCover : NSObject
