@@ -1,0 +1,23 @@
+//
+//  prefix.h
+//  PYMap
+//
+//  Created by rrkd on 16/4/28.
+//  Copyright © 2016年 yr. All rights reserved.
+//
+
+#ifndef prefix_h
+#define prefix_h
+
+
+//#define _Map_Baidu
+
+
+//#define _Map_Tencent
+
+
+
+#define _Map_MA
+
+
+#endif /* prefix_h */
