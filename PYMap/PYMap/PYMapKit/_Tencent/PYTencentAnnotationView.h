@@ -1,5 +1,5 @@
 //
-//  PYBaiduImageAnnotation.h
+//  PYTencentAnnotationView.h
 //  YR
 //
 //  Created by YR on 15-4-28.
@@ -13,7 +13,7 @@
  *
  *  只有一个图标
  */
-@interface PYTencentImageAnnotation : QAnnotationView
+@interface PYTencentAnnotationView : QAnnotationView
 @property (nonatomic, strong) NSString* other; //相当于tag
 /**
  *  改变泡泡视图

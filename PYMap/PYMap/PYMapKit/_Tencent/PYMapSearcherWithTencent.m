@@ -10,21 +10,15 @@
 
 #import "PYMapSearcherWithTencent.h"
 
-@interface PYMapSearcherWithTencent () <QMSSearchDelegate>
+@interface PYMapSearcherWithTencent () <QMSSearchDelegate>{
+    QMSSearcher        *_mapSearcher;
+}
 
 @end
 
-@implementation PYMapSearcherWithTencent {
-    QMSSearcher        *_mapSearcher;
+@implementation PYMapSearcherWithTencent
 
-    PYMapSearchErrorCB    _errorCB;
-    PYMapSearchKeywordCompleteCB _kwcompleteCB;
-    PYMapSearchWalkRouteCompleteCB _wrCompleteCB;
-    PYMapSearchDriveRouteCompleteCB _driCompleteCB;
-    PYMapSearchBusRouteCompleteCB _busCompleteCB;
-    PYMapSearchCoordinateFromCityCompleteCB _cfcCompleteCB;
-    PYMapSearchAddressFromCoordinateCompleteCB _afcCompleteCB;
-}
+@synthesize searchDelegate = _searchDelegate;
 
 - (instancetype)init
 {
@@ -142,70 +136,19 @@
     [_mapSearcher searchWithReverseGeoCodeSearchOption:aGCSearchOption];
 }
 
-/*设置检索成功后的回调函数*/
--(void)setSearchKeywordComplete:(PYMapSearchKeywordCompleteCB)completeCB;
-{
-    _kwcompleteCB = [completeCB copy];
-}
-/*设置检索成功后的回调函数*/
--(void)setSearchWalkRouteComplete:(PYMapSearchWalkRouteCompleteCB)completeCB
-{
-    _wrCompleteCB = [completeCB copy];
-}
-/*设置检索驾车路线成功后的回调函数*/
--(void)setSearchDriveRouteComplete:(PYMapSearchDriveRouteCompleteCB)completeCB
-{
-    _driCompleteCB = [completeCB copy];
-}
-/*设置检索公交成功后的回调函数*/
--(void)setSearchBusRouteComplete:(PYMapSearchBusRouteCompleteCB)completeCB
-{
-    _busCompleteCB = [completeCB copy];
-}
-/*设置检索成功后的回调函数*/
--(void)setSearchCoordinateFromCityComplete:(PYMapSearchCoordinateFromCityCompleteCB)completeCB
-{
-    _cfcCompleteCB = [completeCB copy];
-}
-
--(void)setSearchAddressFromCoordinateComplete:(PYMapSearchAddressFromCoordinateCompleteCB)completeCB{
-    _afcCompleteCB = [completeCB copy];
-}
-
-///*设置检索失败后的回调函数*/
-- (void)setError:(PYMapSearchErrorCB)errCB
-{
-    _errorCB = [errCB copy];
-}
-
 
 #pragma mark - QMSSearchDelegate
 
-- (void)searchWithSuggestionSearchOption:(QMSSuggestionSearchOption *)suggestionSearchOption didReceiveResult:(QMSSuggestionResult *)suggestionSearchResult {
-    if (_kwcompleteCB) {
-        NSMutableArray *poies = [NSMutableArray array];
-        
-        for (QMSSuggestionPoiData *poiData in suggestionSearchResult.dataArray) {
-            PYMapPoi *poi = [PYMapPoi createWithTitle:poiData.title
-                                              address:poiData.address
-                                             location:poiData.location];
-            [poies addObject:poi];
-        }
-        
-        _kwcompleteCB(poies);
-    }
-}
 - (void)searchWithSearchOption:(QMSSearchOption *)searchOption didFailWithError:(NSError *)error
 {
-    if (_errorCB != nil) {
-        _errorCB(error);
+    if ([_searchDelegate respondsToSelector:@selector(pyMapSearcher:searchFail:)]) {
+        [_searchDelegate pyMapSearcher:self searchFail:error];
     }
 }
-
 
 - (void)searchWithPoiSearchOption:(QMSPoiSearchOption *)poiSearchOption didReceiveResult:(QMSPoiSearchResult *)poiSearchResult
 {
-    if (_kwcompleteCB) {
+     if ([_searchDelegate respondsToSelector:@selector(pyMapSearcher:searchPOIComplete:)]) {
         NSMutableArray *poies = [NSMutableArray array];
 
         for (QMSSuggestionPoiData *poiData in poiSearchResult.dataArray) {
@@ -215,14 +158,14 @@
             [poies addObject:poi];
         }
 
-        _kwcompleteCB(poies);
+        [_searchDelegate pyMapSearcher:self searchPOIComplete:poies];
     }
 }
 
 - (void)searchWithWalkingRouteSearchOption:(QMSWalkingRouteSearchOption *)walkingRouteSearchOption
                           didRecevieResult:(QMSWalkingRouteSearchResult *)walkingRouteSearchResult
 {
-    if (_wrCompleteCB) {
+   if ([_searchDelegate respondsToSelector:@selector(pyMapSearcher:searchWalkRouteComplete:)]) {
         NSMutableArray *routes = [NSMutableArray new];
 
         for (QMSRoutePlan *aQPlan in walkingRouteSearchResult.routes) {
@@ -238,7 +181,7 @@
         PYWalkingRouteSearchResult *result = [PYWalkingRouteSearchResult new];
         result.routes = routes;
 
-        _wrCompleteCB(result);
+        [_searchDelegate pyMapSearcher:self searchWalkRouteComplete:result];
     }
 }
 
@@ -246,7 +189,7 @@
 - (void)searchWithDrivingRouteSearchOption:(QMSDrivingRouteSearchOption *)drivingRouteSearchOption
                           didRecevieResult:(QMSDrivingRouteSearchResult *)drivingRouteSearchResult
 {
-    if (_driCompleteCB) {
+    if ([_searchDelegate respondsToSelector:@selector(pyMapSearcher:searchDriveRouteComplete:)]) {
         NSMutableArray *routes = [NSMutableArray new];
         
         for (QMSRoutePlan *aQPlan in drivingRouteSearchResult.routes) {
@@ -262,7 +205,7 @@
         PYDrivingRouteSearchResult *result = [PYDrivingRouteSearchResult new];
         result.routes = routes;
         
-        _driCompleteCB(result);
+        _searchDelegate pyMapSearcher:self searchDriveRouteComplete:result];
     }
 
 }
@@ -271,7 +214,7 @@
 - (void)searchWithBusingRouteSearchOption:(QMSBusingRouteSearchOption *)busingRouteSearchOption
                          didRecevieResult:(QMSBusingRouteSearchResult *)busingRouteSearchResult
 {
-    if (_busCompleteCB) {
+    if ([_searchDelegate respondsToSelector:@selector(pyMapSearcher:searchBusingRouteComplete:)]) {
         NSMutableArray *routes = [NSMutableArray new];
         
         for (QMSBusingRoutePlan *aQPlan in busingRouteSearchResult.routes) {
@@ -306,7 +249,7 @@
         PYBusingRouteSearchResult *result = [PYBusingRouteSearchResult new];
         result.routes = routes;
         
-        _busCompleteCB(result);
+        [_searchDelegate pyMapSearcher:self searchBusingRouteComplete:result];
     }
 
 
@@ -315,22 +258,30 @@
 -(void)searchWithGeoCodeSearchOption:(QMSGeoCodeSearchOption *)geoCodeSearchOption
                     didReceiveResult:(QMSGeoCodeSearchResult *)geoCodeSearchResult{
     
-    if (_cfcCompleteCB) {
-        _cfcCompleteCB(geoCodeSearchResult.location);
+     if ([_searchDelegate respondsToSelector:@selector(pyMapSearcher:searchCoordFromAddressComplete:)]) {
+         [_searchDelegate pyMapSearcher:self searchCoordFromAddressComplete:geoCodeSearchResult.location];
     }
 
 
 
 }
 
-- (void)searchWithReverseGeoCodeSearchOption:(QMSReverseGeoCodeSearchOption *)reverseGeoCodeSearchOption didReceiveResult:(QMSReverseGeoCodeSearchResult *)reverseGeoCodeSearchResult{
-
-    if (_afcCompleteCB) {
-        _afcCompleteCB(reverseGeoCodeSearchResult.address_component.province,
-                       reverseGeoCodeSearchResult.address_component.city,
-                       reverseGeoCodeSearchResult.address_component.district,
-                       reverseGeoCodeSearchResult.address_component.street_number,
-                       reverseGeoCodeSearchResult.formatted_addresses.recommend);
+- (void)searchWithReverseGeoCodeSearchOption:(QMSReverseGeoCodeSearchOption *)reverseGeoCodeSearchOption
+                            didReceiveResult:(QMSReverseGeoCodeSearchResult *)reverseGeoCodeSearchResult{
+    
+    if ([_searchDelegate respondsToSelector:@selector(pyMapSearcher:searchAddressFromCoordComplete:)]){
+        
+        PYMapAddress *address = [PYMapAddress new];
+        
+        address.province       = reverseGeoCodeSearchResult.address_component.province;
+        address.city           = reverseGeoCodeSearchResult.address_component.city;
+        address.district       = reverseGeoCodeSearchResult.address_component.district;
+        address.street_number  = reverseGeoCodeSearchResult.address_component.street_number;
+        address.summaryAddress = reverseGeoCodeSearchResult.formatted_addresses.recommend;
+        
+        
+        
+        [_searchDelegate pyMapSearcher:self searchAddressFromCoordComplete:address];
     }
 }
 

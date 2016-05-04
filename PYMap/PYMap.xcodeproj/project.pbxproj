@@ -38,7 +38,7 @@
 		9A6C0CF81CD8556B00D3214A /* PYMapWithMA.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9A6C0CD41CD8556B00D3214A /* PYMapWithMA.mm */; };
 		9A6C0CF91CD8556B00D3214A /* PYMapSearcherWithTencent.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A6C0CD71CD8556B00D3214A /* PYMapSearcherWithTencent.m */; };
 		9A6C0CFA1CD8556B00D3214A /* PYMapWithTencent.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9A6C0CD91CD8556B00D3214A /* PYMapWithTencent.mm */; };
-		9A6C0CFB1CD8556B00D3214A /* PYTencentImageAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A6C0CDB1CD8556B00D3214A /* PYTencentImageAnnotation.m */; };
+		9A6C0CFB1CD8556B00D3214A /* PYTencentAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A6C0CDB1CD8556B00D3214A /* PYTencentAnnotationView.m */; };
 		9A6C0CFC1CD8556B00D3214A /* QMK+Add.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A6C0CDD1CD8556B00D3214A /* QMK+Add.m */; };
 		9A6C0CFD1CD8556B00D3214A /* PYMapFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A6C0CE11CD8556B00D3214A /* PYMapFactory.m */; };
 		9A6C0CFF1CD8556B00D3214A /* PYCoordCover.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A6C0CE81CD8556B00D3214A /* PYCoordCover.m */; };
@@ -94,8 +94,8 @@
 		9A6C0CD71CD8556B00D3214A /* PYMapSearcherWithTencent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PYMapSearcherWithTencent.m; sourceTree = "<group>"; };
 		9A6C0CD81CD8556B00D3214A /* PYMapWithTencent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMapWithTencent.h; sourceTree = "<group>"; };
 		9A6C0CD91CD8556B00D3214A /* PYMapWithTencent.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PYMapWithTencent.mm; sourceTree = "<group>"; };
-		9A6C0CDA1CD8556B00D3214A /* PYTencentImageAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYTencentImageAnnotation.h; sourceTree = "<group>"; };
-		9A6C0CDB1CD8556B00D3214A /* PYTencentImageAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PYTencentImageAnnotation.m; sourceTree = "<group>"; };
+		9A6C0CDA1CD8556B00D3214A /* PYTencentAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYTencentAnnotationView.h; sourceTree = "<group>"; };
+		9A6C0CDB1CD8556B00D3214A /* PYTencentAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PYTencentAnnotationView.m; sourceTree = "<group>"; };
 		9A6C0CDC1CD8556B00D3214A /* QMK+Add.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QMK+Add.h"; sourceTree = "<group>"; };
 		9A6C0CDD1CD8556B00D3214A /* QMK+Add.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "QMK+Add.m"; sourceTree = "<group>"; };
 		9A6C0CE01CD8556B00D3214A /* PYMapFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMapFactory.h; sourceTree = "<group>"; };
@@ -275,8 +275,8 @@
 				9A6C0CD71CD8556B00D3214A /* PYMapSearcherWithTencent.m */,
 				9A6C0CD81CD8556B00D3214A /* PYMapWithTencent.h */,
 				9A6C0CD91CD8556B00D3214A /* PYMapWithTencent.mm */,
-				9A6C0CDA1CD8556B00D3214A /* PYTencentImageAnnotation.h */,
-				9A6C0CDB1CD8556B00D3214A /* PYTencentImageAnnotation.m */,
+				9A6C0CDA1CD8556B00D3214A /* PYTencentAnnotationView.h */,
+				9A6C0CDB1CD8556B00D3214A /* PYTencentAnnotationView.m */,
 				9A6C0CDC1CD8556B00D3214A /* QMK+Add.h */,
 				9A6C0CDD1CD8556B00D3214A /* QMK+Add.m */,
 			);
@@ -398,7 +398,7 @@
 				9A6C0CF91CD8556B00D3214A /* PYMapSearcherWithTencent.m in Sources */,
 				9A6C0D0A1CD8749100D3214A /* PYMapSearchServiceFactory.m in Sources */,
 				9A6C0CF51CD8556B00D3214A /* MA+Add.m in Sources */,
-				9A6C0CFB1CD8556B00D3214A /* PYTencentImageAnnotation.m in Sources */,
+				9A6C0CFB1CD8556B00D3214A /* PYTencentAnnotationView.m in Sources */,
 				9A6C0CF31CD8556B00D3214A /* PYMapSearcherWithBaidu.m in Sources */,
 				9A4953B11CD1B26C004CB354 /* main.m in Sources */,
 				9A6C0CF61CD8556B00D3214A /* PYMAAnnotationView.m in Sources */,

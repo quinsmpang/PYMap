@@ -17,6 +17,7 @@
  *  @brief  标注view中心坐标
  */
 @property (nonatomic, readonly) CLLocationCoordinate2D coordinate;
+@property (nonatomic, readonly) BOOL showCallout;
 
 @end
 
@@ -29,5 +30,6 @@
 @interface PYPointAnnotation : NSObject <PYAnnotation>
 
 @property (nonatomic, assign) CLLocationCoordinate2D coordinate;
+@property (nonatomic, assign) BOOL showCallout;
 
 @end

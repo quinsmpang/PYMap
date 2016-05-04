@@ -8,53 +8,54 @@
 #ifdef _Map_Tencent
 
 #import "PYMapWithTencent.h"
-#import "PYTencentImageAnnotation.h"
+#import "PYTencentAnnotationView.h"
 #import "QMK+Add.h"
 
 
-/**
- *  @author YangRui, 16-02-26 10:02:46
- *
- *  地图显示标注视图类型
- */
-typedef NS_ENUM(NSUInteger, QAnonotationType) {
-    QAnonotationType_Normal,    //只有图片
-    QAnonotationType_Callout, //带callout的气泡
-};;
-
-
-@interface PYPointAnnotationSave : NSObject
+@interface PYAnnotationInfo : NSObject
 
 @property(nonatomic,strong) QPointAnnotation* annotation;
 @property(nonatomic,strong) NSString*   uid;
 @property(nonatomic,strong) NSString*   imageName;
-@property(nonatomic,assign) QAnonotationType type;
 
 @end
 
 
-@interface PYMapWithTencent () <QMapViewDelegate>
+typedef NS_ENUM(NSUInteger, ShapeType) {
+    ShapeType_Polygon,
+    ShapeType_Line,
+};
+
+
+@interface PYShapeInfo : NSObject
+
+@property(nonatomic,strong) UIColor* strokeColor;
+@property(nonatomic,strong) UIColor* fillColor;
+@property(nonatomic,assign) CGFloat lineWidth;
+@property(nonatomic,assign) ShapeType shapeType;
+@property(nonatomic,strong) QShape* shape;
+
 @end
 
 
-@implementation PYMapWithTencent {
+@interface PYMapWithTencent () <QMapViewDelegate>{
     QMapView            *_mapView;
-    NSMutableDictionary *_overlayInfo;
-    NSMutableDictionary *_annotationInfo;
+    NSMutableDictionary<NSString*, PYShapeInfo*>      *_shapeCache;
+    NSMutableDictionary<NSString*, PYAnnotationInfo*> *_annotationCache;
 }
+@end
 
-@synthesize annotationSelectAtUid = _annotationSelectAtUid;
-@synthesize annotationDeSelectAtUid = _annotationDeSelectAtUid;
-@synthesize annotationCalloutViewWithUid = _annotationCalloutViewWithUid;
-@synthesize annotationImageWithUid = _annotationImageWithUid;
+
+@implementation PYMapWithTencent
+
 @synthesize mapDelegate = _mapDelegate;
 
 - (instancetype)init
 {
     if (self = [super init]) {
         _mapView        = [[QMapView alloc] init];
-        _overlayInfo    = [[NSMutableDictionary alloc] init];
-        _annotationInfo = [[NSMutableDictionary alloc] init];
+        _shapeCache    = [[NSMutableDictionary alloc] init];
+        _annotationCache = [[NSMutableDictionary alloc] init];
 
         _mapView.delegate = self;
     }
@@ -82,39 +83,22 @@ typedef NS_ENUM(NSUInteger, QAnonotationType) {
  */
 - (void)addAnnotation:(id <PYAnnotation>)annotation imageName:(NSString *)imgStr uid:(NSString *)uid
 {
-    [self _addAnnotation:annotation imageName:imgStr uid:uid withType:QAnonotationType_Normal];
-
-}
-
-
-
-- (void)addCalloutAnnotation:(id<PYAnnotation>)annotation
-                         imageName:(NSString *)imgStr
-                               uid:(NSString *)uid{
-   
-    [self _addAnnotation:annotation imageName:imgStr uid:uid withType:QAnonotationType_Callout];
-}
-
-- (void)_addAnnotation:(id<PYAnnotation>)annotation
-                        imageName:(NSString *)imgStr
-                              uid:(NSString *)uid
-                         withType:(QAnonotationType)type{
-   
     if (uid == nil) return;
     
     QPointAnnotation *pointAnnotation = [[QPointAnnotation alloc] init];
     pointAnnotation._uid_      = uid;
     pointAnnotation.coordinate = [annotation coordinate];
     
-    PYPointAnnotationSave* save = [PYPointAnnotationSave new];
+    PYAnnotationInfo* save = [PYAnnotationInfo new];
     save.annotation  = pointAnnotation;
     save.imageName = imgStr;
-    save.type = type;
     
-    [_annotationInfo setObject:save forKey:uid];
+    [_annotationCache setObject:save forKey:uid];
     
     [_mapView addAnnotation:pointAnnotation];
+
 }
+
 
 
 /*!
@@ -128,10 +112,10 @@ typedef NS_ENUM(NSUInteger, QAnonotationType) {
     for (NSString* annotationUID in annotationUIDs) {
         if (![annotationUID isKindOfClass:[NSString class]]) return;
 
-        PYPointAnnotationSave *pointAnnotation = [_annotationInfo objectForKey:annotationUID];
+        PYAnnotationInfo *pointAnnotation = [_annotationCache objectForKey:annotationUID];
         if (pointAnnotation) {
             [pointAnnotations addObject:pointAnnotation.annotation];
-            [_annotationInfo removeObjectForKey:annotationUID];
+            [_annotationCache removeObjectForKey:annotationUID];
         }
     }
 
@@ -146,10 +130,10 @@ typedef NS_ENUM(NSUInteger, QAnonotationType) {
 */
 - (void)removeAnnotation:(NSString*)annotationUID;
 {
-    PYPointAnnotationSave *pointAnnotation  = [_annotationInfo objectForKey:annotationUID];
+    PYAnnotationInfo *pointAnnotation  = [_annotationCache objectForKey:annotationUID];
     if (pointAnnotation) {
         [_mapView removeAnnotation:pointAnnotation.annotation];
-        [_annotationInfo removeObjectForKey:annotationUID];
+        [_annotationCache removeObjectForKey:annotationUID];
     }
 }
 
@@ -208,14 +192,14 @@ typedef NS_ENUM(NSUInteger, QAnonotationType) {
     QPolygon *overlay = [QPolygon polygonWithPoints:temppoints count:coordinates.count];
     overlay._uid_ = uid;
     
-    NSDictionary *dicInfo = [NSDictionary dictionaryWithObjectsAndKeys:strokeColor, @"strokeColor"
-                             , fillColor, @"fillColor"
-                             , @(lineWidth), @"lineWidth"
-                             , @"Polygon", @"shape"
-                             , overlay, @"view"
-                             , nil];
+    PYShapeInfo* shapeInfo = [PYShapeInfo new];
+    shapeInfo.strokeColor = strokeColor;
+    shapeInfo.fillColor = fillColor;
+    shapeInfo.lineWidth = lineWidth;
+    shapeInfo.shape = overlay;
+    shapeInfo.shapeType = ShapeType_Polygon;
     
-    [_overlayInfo setObject:dicInfo forKey:uid];
+    [_shapeCache setObject:shapeInfo forKey:uid];
     
     [_mapView addOverlay:overlay];
     delete temppoints;
@@ -242,14 +226,13 @@ typedef NS_ENUM(NSUInteger, QAnonotationType) {
     QPolyline* line = [QPolyline polylineWithPoints:temppoints count:coordinates.count];
     line._uid_ = uid;
 
-    NSDictionary *dicInfo = [NSDictionary dictionaryWithObjectsAndKeys
-                             :strokeColor, @"strokeColor"
-                             , @(lineWidth), @"lineWidth"
-                             , @"Polyline", @"shape"
-                             , line, @"view"
-                             , nil];
-
-    [_overlayInfo setObject:dicInfo forKey:uid];
+    PYShapeInfo* shapeInfo = [PYShapeInfo new];
+    shapeInfo.strokeColor = strokeColor;
+    shapeInfo.lineWidth = lineWidth;
+    shapeInfo.shape = line;
+    shapeInfo.shapeType = ShapeType_Polygon;
+    
+    [_shapeCache setObject:shapeInfo forKey:uid];
 
     [_mapView addOverlay:line];
     delete temppoints;
@@ -325,23 +308,28 @@ typedef NS_ENUM(NSUInteger, QAnonotationType) {
         QShape* shape = (QShape*)overlay;
         NSString* uid = shape._uid_;
         
-        NSDictionary *dic = [_overlayInfo objectForKey:uid];
-        if (dic && [[dic objectForKey:@"shape"] isEqualToString:@"Polygon"]) {
+        PYShapeInfo *shapeInfo = [_shapeCache objectForKey:uid];
+        
+        ///添加多边形
+        if (shapeInfo && ShapeType_Polygon == shapeInfo.shapeType) {
+            
             QPolygonView *cutomView = [[QPolygonView alloc] initWithOverlay:overlay];
             
-            cutomView.strokeColor = [dic objectForKey:@"strokeColor"];
-            cutomView.fillColor   = [dic objectForKey:@"fillColor"];
-            cutomView.lineWidth   = [[dic objectForKey:@"lineWidth"] floatValue];
+            cutomView.strokeColor = shapeInfo.strokeColor;
+            cutomView.fillColor   = shapeInfo.fillColor;
+            cutomView.lineWidth   = shapeInfo.lineWidth;
             
             return cutomView;
-        }else if (dic && [[dic objectForKey:@"shape"] isEqualToString:@"Polyline"]){
+            
+            ///添加线条
+        }else if (shapeInfo && ShapeType_Line == shapeInfo.shapeType){
+            
             QPolylineView *cutomView = [[QPolylineView alloc] initWithOverlay:overlay];
             
-            cutomView.strokeColor = [dic objectForKey:@"strokeColor"];
-            cutomView.lineWidth   = [[dic objectForKey:@"lineWidth"] floatValue];
+            cutomView.strokeColor = shapeInfo.strokeColor;
+            cutomView.lineWidth   = shapeInfo.lineWidth;
             
             return cutomView;
-
         }
 
         return nil;
@@ -360,20 +348,19 @@ typedef NS_ENUM(NSUInteger, QAnonotationType) {
         QPointAnnotation* pointAnnotation = annotation;
         NSString* uid = pointAnnotation._uid_;
         
-        PYTencentImageAnnotation *annotationView = (PYTencentImageAnnotation *)[mapView dequeueReusableAnnotationViewWithIdentifier:uid];
+        PYTencentAnnotationView *annotationView = (PYTencentAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:uid];
         
         if (annotationView == nil) {
-            annotationView = [[PYTencentImageAnnotation alloc] initWithAnnotation:annotation reuseIdentifier:uid];
+            annotationView = [[PYTencentAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:uid];
         }
        
-        PYPointAnnotationSave *annotationSave = [_annotationInfo objectForKey:uid];
+        PYAnnotationInfo *annotationSave = [_annotationCache objectForKey:uid];
         annotationView.other = uid;
         
         //动画annotation
         if ([self.mapDelegate respondsToSelector:@selector(pyMap:viewForAnnotationWithId:)]) {
             
             UIView* showView = [self.mapDelegate pyMap:self viewForAnnotationWithId:uid];
-            if (nil == showView) return nil;
             [annotationView setShowView:showView];
         
         }else{
@@ -384,12 +371,11 @@ typedef NS_ENUM(NSUInteger, QAnonotationType) {
             annotationView.image = [UIImage imageNamed:imageName];
         }
         
-        if (annotationSave.type == QAnonotationType_Callout) {
-           
-            if (self.annotationCalloutViewWithUid) {
-                UIView* calloutView = self.annotationCalloutViewWithUid(uid);
-                [annotationView changeCalloutView:calloutView];
-            }
+
+        ///气泡
+        if ([_mapDelegate respondsToSelector:@selector(pyMap:calloutViewForAnnotationWithId:)]) {
+            UIView* calloutView = [_mapDelegate pyMap:self calloutViewForAnnotationWithId:uid]
+            [annotationView changeCalloutView:calloutView];
         }
         
         return annotationView;
@@ -402,10 +388,10 @@ typedef NS_ENUM(NSUInteger, QAnonotationType) {
 
 -(void)mapView:(QMapView *)mapView didSelectAnnotationView:(QAnnotationView *)view{
 
-    if (![view isKindOfClass:[PYTencentImageAnnotation class]]) return;
+    if (![view isKindOfClass:[PYTencentAnnotationView class]]) return;
     
-    if (self.annotationSelectAtUid) {
-        self.annotationSelectAtUid(((PYTencentImageAnnotation*)view).other);
+    if ([_mapDelegate respondsToSelector:@selector(pyMap:annotationSelectAtUid:)]) {
+        [_mapDelegate pyMap:self annotationSelectAtUid:((PYTecentAnnotationView*)view).other];
     }
 }
 
@@ -413,10 +399,10 @@ typedef NS_ENUM(NSUInteger, QAnonotationType) {
 
 -(void)mapView:(QMapView *)mapView didDeselectAnnotationView:(QAnnotationView *)view{
 
-    if (![view isKindOfClass:[PYTencentImageAnnotation class]]) return;
+    if (![view isKindOfClass:[PYTencentAnnotationView class]]) return;
     
-    if (self.annotationDeSelectAtUid) {
-        self.annotationDeSelectAtUid(((PYTencentImageAnnotation*)view).other);
+    if ([_mapDelegate respondsToSelector:@selector(pyMap:annotationDeSelectAtUid:)]) {
+        [_mapDelegate pyMap:self annotationDeSelectAtUid:((PYTecentAnnotationView*)view).other];
     }
 
 }
@@ -456,14 +442,14 @@ typedef NS_ENUM(NSUInteger, QAnonotationType) {
 - (void)removeAllAnnotations
 {
     [_mapView removeAnnotations:_mapView.annotations];
-    [_annotationInfo removeAllObjects];
+    [_annotationCache removeAllObjects];
 }
 
 
 - (void)removeOverlayView:(NSString *)uid
 {
-    [_mapView removeOverlay:[[_overlayInfo objectForKey:uid] objectForKey:@"view"]];
-    [_overlayInfo removeObjectForKey:uid];
+    [_mapView removeOverlay:[[_shapeCache objectForKey:uid] objectForKey:@"view"]];
+    [_shapeCache removeObjectForKey:uid];
 }
 
 
@@ -473,15 +459,15 @@ typedef NS_ENUM(NSUInteger, QAnonotationType) {
         
         if (![aAnnotation isKindOfClass:[QPointAnnotation class]]) continue;
         
-        PYPointAnnotationSave *annotationSave = [_annotationInfo objectForKey:aAnnotation._uid_];
+        PYAnnotationInfo *annotationSave = [_annotationCache objectForKey:aAnnotation._uid_];
         if (annotationSave.type != QAnonotationType_Callout) continue;
         
-        PYTencentImageAnnotation *annotationView  = (PYTencentImageAnnotation*)[_mapView viewForAnnotation:aAnnotation];
-        if (![annotationView isKindOfClass:[PYTencentImageAnnotation class]]) continue;
+        PYTencentAnnotationView *annotationView  = (PYTencentAnnotationView*)[_mapView viewForAnnotation:aAnnotation];
+        if (![annotationView isKindOfClass:[PYTencentAnnotationView class]]) continue;
         
        
-        if (self.annotationCalloutViewWithUid) {
-            UIView* calloutView = self.annotationCalloutViewWithUid(aAnnotation._uid_);
+        if ([_mapDelegate respondsToSelector:@selector(pyMap:calloutViewForAnnotationWithId:)]) {
+            UIView* calloutView = [_mapDelegate pyMap:self calloutViewForAnnotationWithId:aAnnotation._uid_];
             [annotationView changeCalloutView:calloutView];
         }
         
@@ -491,7 +477,7 @@ typedef NS_ENUM(NSUInteger, QAnonotationType) {
 @end
 
 
-@implementation PYPointAnnotationSave
+@implementation PYAnnotationInfo
 
 @end
 

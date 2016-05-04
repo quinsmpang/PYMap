@@ -1,5 +1,5 @@
 //
-//  PYBaiduImageAnnotation.m
+//  PYTencentAnnotationView.m
 //  YR
 //
 //  Created by YR on 15-4-28.
@@ -7,9 +7,9 @@
 //
 #ifdef _Map_Tencent
 
-#import "PYTencentImageAnnotation.h"
+#import "PYTencentAnnotationView.h"
 
-@implementation PYTencentImageAnnotation{
+@implementation PYTencentAnnotationView{
     UIView* _curCallOutView;
     UIView* _showView;
 }

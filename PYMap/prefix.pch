@@ -13,7 +13,7 @@
 //#define _Map_Baidu
 
 
-//#define _Map_Tencent
+#define _Map_Tencent
 
 
 
