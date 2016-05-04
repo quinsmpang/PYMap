@@ -38,6 +38,11 @@
 
 @end
 
+
+@implementation PYMapAddress
+
+@end
+
 @implementation PYRoutePlan
 
 @end

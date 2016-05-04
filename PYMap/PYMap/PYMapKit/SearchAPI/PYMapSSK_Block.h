@@ -6,7 +6,7 @@
 //  Copyright © 2016年 yr. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "PYMapSearchResult.h"
 
 /**
  *  地图搜索block回调协议
@@ -41,9 +41,8 @@
 /**
  * 从坐垫检索地址成功后的回调
  */
-@property (nonatomic, copy) void(^searchAddressFromCoordComplete)(NSString *province,NSString *city,
-                                                                  NSString *district,NSString *street_number,
-                                                                  NSString *address);
+@property (nonatomic, copy) void(^searchAddressFromCoordComplete)(PYMapAddress* address);
+
 /**
  * 检索失败后的回调
  */

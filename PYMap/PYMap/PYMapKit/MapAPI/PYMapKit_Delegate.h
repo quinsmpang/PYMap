@@ -14,7 +14,7 @@
 
 @protocol PYMapKit_Delegate
 
-@property (nonatomic, assign) id<PYMapDelegate> mapDelegate;
+@property (nonatomic, weak) id<PYMapDelegate> mapDelegate;
 
 @end
 
@@ -39,8 +39,7 @@
  */
 - (void)pyMap:(id<PYMapKitProtocal>)map regionWillChangeFrom:(PYCoordinateRegion)region withAnimated:(BOOL)animated;
 
-
-/**
+/*!
  *  @brief  自定义视图
  *
  *  @param map 地图view

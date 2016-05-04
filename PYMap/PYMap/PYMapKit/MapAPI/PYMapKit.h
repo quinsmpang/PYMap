@@ -12,6 +12,9 @@
 #import "PYMapKit_Block.h"
 #import "PYMapKit_Delegate.h"
 
+/**
+ *  地图协议
+ */
 @protocol PYMapKitProtocal <NSObject, PYMapKit_Block, PYMapKit_Delegate>
 
 /*!
@@ -31,7 +34,7 @@
  */
 - (PYCoordinateRegion)getMapRegion;
 
-/**
+/*!
  *  @brief 根据当前地图View的窗口大小调整传入的region，返回适合当前地图窗口显示的region
  *  @param region 待调整的经纬度范围
  *  @return 调整后适合当前地图窗口显示的经纬度范围

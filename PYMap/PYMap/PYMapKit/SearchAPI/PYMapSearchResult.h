@@ -9,6 +9,9 @@
 #import <CoreGraphics/CoreGraphics.h>
 #import <CoreLocation/CoreLocation.h>
 
+/**
+ *  poi 信息
+ */
 @interface PYMapPoi : NSObject
 
 @property (readonly, nonatomic) NSString* title;
@@ -21,30 +24,24 @@
 
 @end
 
-
-/*!
- *  @brief  驾车路线规划条件
+/**
+ *  地址信息
  */
-typedef NS_ENUM(NSUInteger, PYDrivingRoutePolicy)
-{
-    PYDrivingRoutePolicy_LeastTime = 0,     //省时
-    PYDrivingRoutePolicy_LeastFee = 1,      //省钱
-    PYDrivingRoutePolicy_LeastDistance = 2, //距离最短
-    PYDrivingRoutePolicy_RealTraffic = 3,   //综合最优
-};
+@interface PYMapAddress : NSObject
+
+@property (readonly, nonatomic) NSString* province;
+@property (readonly, nonatomic) NSString* city;
+@property (readonly, nonatomic) NSString* district;
+@property (readonly, nonatomic) NSString* street_number;
+@property (readonly, nonatomic) NSString* summaryAddress; /*简明地址*/
+
+@end
 
 
-/*!
- *  @brief  公交路线规划条件
+
+/**
+ *  路径规划
  */
-typedef NS_ENUM(NSUInteger, PYBusingRoutePolicy)
-{
-    PYBusingRoutePolicy_LeastTime = 0,          //省时
-    PYBusingRoutePolicy_LeastTransfer = 1,      //少换乘
-    PYBusingRoutePolicy_LeastWalking = 2,       //少步行
-};
-
-
 @interface PYRoutePlan : NSObject
 
 /*!
