@@ -98,21 +98,14 @@
 #pragma mark - Annotation
 
 /*!
- *  @brief  向地图窗口添加标注
+ *  @brief  向地图窗口添加标注, 
+ *  @note   协议"viewForAnnotation"的优先级高于此处的imageName
  *
  *  @param annotation 要添加的标注
  */
 - (void)addAnnotation:(id <PYAnnotation>)annotation
             imageName:(NSString *)imgStr
                   uid:(NSString *)uid;
-/*!
- *  @brief  向地图窗口添加标注，带有气泡
- *
- *  @param annotation 要添加的标注
- */
-- (void)addCalloutAnnotation:(id<PYAnnotation>)annotation
-                   imageName:(NSString *)imgStr
-                         uid:(NSString *)uid;
 
 /*!
  *  @brief  移除一个标注
@@ -133,6 +126,7 @@
 
 /*!
  *  @brief  刷新气泡
+ *  @note  每次调用此方法,协议"calloutViewForAnnotation"都会执行
  */
 - (void)updateCallout;
 

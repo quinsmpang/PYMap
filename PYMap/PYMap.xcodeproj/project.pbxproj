@@ -33,7 +33,7 @@
 		9A6C0CF31CD8556B00D3214A /* PYMapSearcherWithBaidu.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A6C0CC91CD8556B00D3214A /* PYMapSearcherWithBaidu.m */; };
 		9A6C0CF41CD8556B00D3214A /* PYMapWithBaidu.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9A6C0CCB1CD8556B00D3214A /* PYMapWithBaidu.mm */; };
 		9A6C0CF51CD8556B00D3214A /* MA+Add.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A6C0CCE1CD8556B00D3214A /* MA+Add.m */; };
-		9A6C0CF61CD8556B00D3214A /* PYMAImageAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A6C0CD01CD8556B00D3214A /* PYMAImageAnnotation.m */; };
+		9A6C0CF61CD8556B00D3214A /* PYMAAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A6C0CD01CD8556B00D3214A /* PYMAAnnotationView.m */; };
 		9A6C0CF71CD8556B00D3214A /* PYMapSearcherWithMA.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A6C0CD21CD8556B00D3214A /* PYMapSearcherWithMA.m */; };
 		9A6C0CF81CD8556B00D3214A /* PYMapWithMA.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9A6C0CD41CD8556B00D3214A /* PYMapWithMA.mm */; };
 		9A6C0CF91CD8556B00D3214A /* PYMapSearcherWithTencent.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A6C0CD71CD8556B00D3214A /* PYMapSearcherWithTencent.m */; };
@@ -84,8 +84,8 @@
 		9A6C0CCB1CD8556B00D3214A /* PYMapWithBaidu.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PYMapWithBaidu.mm; sourceTree = "<group>"; };
 		9A6C0CCD1CD8556B00D3214A /* MA+Add.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MA+Add.h"; sourceTree = "<group>"; };
 		9A6C0CCE1CD8556B00D3214A /* MA+Add.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MA+Add.m"; sourceTree = "<group>"; };
-		9A6C0CCF1CD8556B00D3214A /* PYMAImageAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMAImageAnnotation.h; sourceTree = "<group>"; };
-		9A6C0CD01CD8556B00D3214A /* PYMAImageAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PYMAImageAnnotation.m; sourceTree = "<group>"; };
+		9A6C0CCF1CD8556B00D3214A /* PYMAAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMAAnnotationView.h; sourceTree = "<group>"; };
+		9A6C0CD01CD8556B00D3214A /* PYMAAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PYMAAnnotationView.m; sourceTree = "<group>"; };
 		9A6C0CD11CD8556B00D3214A /* PYMapSearcherWithMA.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMapSearcherWithMA.h; sourceTree = "<group>"; };
 		9A6C0CD21CD8556B00D3214A /* PYMapSearcherWithMA.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PYMapSearcherWithMA.m; sourceTree = "<group>"; };
 		9A6C0CD31CD8556B00D3214A /* PYMapWithMA.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMapWithMA.h; sourceTree = "<group>"; };
@@ -260,8 +260,8 @@
 			children = (
 				9A6C0CCD1CD8556B00D3214A /* MA+Add.h */,
 				9A6C0CCE1CD8556B00D3214A /* MA+Add.m */,
-				9A6C0CCF1CD8556B00D3214A /* PYMAImageAnnotation.h */,
-				9A6C0CD01CD8556B00D3214A /* PYMAImageAnnotation.m */,
+				9A6C0CCF1CD8556B00D3214A /* PYMAAnnotationView.h */,
+				9A6C0CD01CD8556B00D3214A /* PYMAAnnotationView.m */,
 				9A6C0CD11CD8556B00D3214A /* PYMapSearcherWithMA.h */,
 				9A6C0CD21CD8556B00D3214A /* PYMapSearcherWithMA.m */,
 				9A6C0CD31CD8556B00D3214A /* PYMapWithMA.h */,
@@ -405,7 +405,7 @@
 				9A6C0CFB1CD8556B00D3214A /* PYTencentImageAnnotation.m in Sources */,
 				9A6C0CF31CD8556B00D3214A /* PYMapSearcherWithBaidu.m in Sources */,
 				9A4953B11CD1B26C004CB354 /* main.m in Sources */,
-				9A6C0CF61CD8556B00D3214A /* PYMAImageAnnotation.m in Sources */,
+				9A6C0CF61CD8556B00D3214A /* PYMAAnnotationView.m in Sources */,
 				9A6C0CF81CD8556B00D3214A /* PYMapWithMA.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

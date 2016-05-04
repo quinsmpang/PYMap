@@ -19,6 +19,7 @@
     AMapSearchAPI *_mapSearcher;
 }
 
+@synthesize searchDelegate                 = _searchDelegate;
 @synthesize searchFail                     = _searchFail;
 @synthesize searchPOIComplete              = _searchPOIComplete;
 @synthesize searchWalkRouteComplete        = _searchWalkRouteComplete;
@@ -181,25 +182,36 @@
     if (_searchFail) {
         _searchFail(error);
     }
+
+    if ([_searchDelegate respondsToSelector:@selector(pyMapSearcher:searchFail:)]) {
+        [_searchDelegate pyMapSearcher:self searchFail:error];
+    }
 }
 
 
 - (void)onPOISearchDone:(AMapPOISearchBaseRequest *)request response:(AMapPOISearchResponse *)response;
 {
+    if (nil == _searchPOIComplete &&
+        false == [_searchDelegate respondsToSelector:@selector(pyMapSearcher:searchPOIComplete:)]) return;
+
+    NSMutableArray *poies = [NSMutableArray array];
+
+    for (AMapPOI *poiData in response.pois) {
+        CLLocationCoordinate2D coor = CLLocationCoordinate2DMake(poiData.location.latitude,
+                                                                 poiData.location.longitude);
+
+        PYMapPoi *poi = [PYMapPoi createWithTitle:poiData.name
+                                          address:poiData.address
+                                         location:coor];
+        [poies addObject:poi];
+    }
+
     if (_searchPOIComplete) {
-        NSMutableArray *poies = [NSMutableArray array];
-
-        for (AMapPOI *poiData in response.pois) {
-            CLLocationCoordinate2D coor = CLLocationCoordinate2DMake(poiData.location.latitude,
-                                                                     poiData.location.longitude);
-
-            PYMapPoi *poi = [PYMapPoi createWithTitle:poiData.name
-                                              address:poiData.address
-                                             location:coor];
-            [poies addObject:poi];
-        }
-
         _searchPOIComplete(poies);
+    }
+
+    if ([_searchDelegate respondsToSelector:@selector(pyMapSearcher:searchPOIComplete:)]) {
+        [_searchDelegate pyMapSearcher:self searchPOIComplete:poies];
     }
 }
 
@@ -218,115 +230,159 @@
 
 - (void)onWalkingRouteSearchDone:(AMapRouteSearchBaseRequest *)request response:(AMapRouteSearchResponse *)response
 {
+    if (nil == _searchWalkRouteComplete &&
+        false == [_searchDelegate respondsToSelector:@selector(pyMapSearcher:searchWalkRouteComplete:)]) return;
+
+    NSMutableArray *routes = [NSMutableArray new];
+
+    for (AMapPath *aPlan in response.route.paths) {
+        PYRoutePlan *aRRPlan = [PYRoutePlan new];
+        aRRPlan.distance = aPlan.distance;
+        aRRPlan.duration = aPlan.duration;
+        aRRPlan.polyline = [self _coverToCLLocationsSteps:aPlan.steps];
+
+        [routes addObject:aRRPlan];
+    }
+
+    PYWalkingRouteSearchResult *result = [PYWalkingRouteSearchResult new];
+    result.routes = routes;
+
     if (_searchWalkRouteComplete) {
-        NSMutableArray *routes = [NSMutableArray new];
-
-        for (AMapPath *aPlan in response.route.paths) {
-            PYRoutePlan *aRRPlan = [PYRoutePlan new];
-            aRRPlan.distance = aPlan.distance;
-            aRRPlan.duration = aPlan.duration;
-            aRRPlan.polyline = [self _coverToCLLocationsSteps:aPlan.steps];
-
-            [routes addObject:aRRPlan];
-        }
-
-        PYWalkingRouteSearchResult *result = [PYWalkingRouteSearchResult new];
-        result.routes = routes;
-
         _searchWalkRouteComplete(result);
+    }
+
+    if ([_searchDelegate respondsToSelector:@selector(pyMapSearcher:searchWalkRouteComplete:)]) {
+        [_searchDelegate pyMapSearcher:self searchWalkRouteComplete:result];
     }
 }
 
 
 - (void)onDrivingRouteSearchDone:(AMapRouteSearchBaseRequest *)request response:(AMapRouteSearchResponse *)response
 {
+    if (nil == _searchDriveRouteComplete &&
+        false == [_searchDelegate respondsToSelector:@selector(pyMapSearcher:searchDriveRouteComplete:)]) return;
+
+    NSMutableArray *routes = [NSMutableArray new];
+
+    for (AMapPath *aPlan in response.route.paths) {
+        PYRoutePlan *aRRPlan = [PYRoutePlan new];
+        aRRPlan.distance = aPlan.distance;
+        aRRPlan.duration = aPlan.duration;
+        aRRPlan.polyline = [self _coverToCLLocationsSteps:aPlan.steps];
+
+        [routes addObject:aRRPlan];
+    }
+
+    PYDrivingRouteSearchResult *result = [PYDrivingRouteSearchResult new];
+    result.routes = routes;
+
     if (_searchDriveRouteComplete) {
-        NSMutableArray *routes = [NSMutableArray new];
-
-        for (AMapPath *aPlan in response.route.paths) {
-            PYRoutePlan *aRRPlan = [PYRoutePlan new];
-            aRRPlan.distance = aPlan.distance;
-            aRRPlan.duration = aPlan.duration;
-            aRRPlan.polyline = [self _coverToCLLocationsSteps:aPlan.steps];
-
-            [routes addObject:aRRPlan];
-        }
-
-        PYDrivingRouteSearchResult *result = [PYDrivingRouteSearchResult new];
-        result.routes = routes;
-
         _searchDriveRouteComplete(result);
+    }
+
+    if ([_searchDelegate respondsToSelector:@selector(pyMapSearcher:searchDriveRouteComplete:)]) {
+        [_searchDelegate pyMapSearcher:self searchDriveRouteComplete:result];
     }
 }
 
 
 - (void)onBusingRouteSearchDone:(AMapRouteSearchBaseRequest *)request response:(AMapRouteSearchResponse *)response
 {
-    if (_searchBusingRouteComplete) {
-        NSMutableArray *routes = [NSMutableArray new];
+    if (nil == _searchDriveRouteComplete &&
+        false == [_searchDelegate respondsToSelector:@selector(pyMapSearcher:searchBusingRouteComplete:)]) return;
 
-        for (AMapTransit *aPlan in response.route.transits) {
-            PYBusingRoutePlan *aRRPlan = [PYBusingRoutePlan new];
-            aRRPlan.distance = aPlan.distance;
-            aRRPlan.duration = aPlan.duration;
+    NSMutableArray *routes = [NSMutableArray new];
 
-            NSMutableArray *pySteps = [NSMutableArray new];
-            for (AMapSegment *segment in aPlan.segments) {
-                if (![segment isKindOfClass:[AMapSegment class]]) continue;
+    for (AMapTransit *aPlan in response.route.transits) {
+        PYBusingRoutePlan *aRRPlan = [PYBusingRoutePlan new];
+        aRRPlan.distance = aPlan.distance;
+        aRRPlan.duration = aPlan.duration;
 
-                PYBusingSegmentRoutePlan *pySegment = [PYBusingSegmentRoutePlan new];
+        NSMutableArray *pySteps = [NSMutableArray new];
+        for (AMapSegment *segment in aPlan.segments) {
+            if (![segment isKindOfClass:[AMapSegment class]]) continue;
 
-                NSArray *busChooses = segment.buslines;
+            PYBusingSegmentRoutePlan *pySegment = [PYBusingSegmentRoutePlan new];
 
-                if (busChooses.count > 0) {
-                    AMapBusLine *busLine = segment.buslines[0];
-                    pySegment.polyline = [self _coverToCLLocationsPolyline:busLine.polyline];
-                    pySegment.mode     = PYBusingRouteStepModeType_Driving;
-                } else {
-                    AMapWalking *walking = segment.walking;
-                    pySegment.polyline = [self _coverToCLLocationsSteps:walking.steps];
-                    pySegment.mode     = PYBusingRouteStepModeType_Walking;
-                }
+            NSArray *busChooses = segment.buslines;
 
-                [pySteps addObject:pySegment];
+            if (busChooses.count > 0) {
+                AMapBusLine *busLine = segment.buslines[0];
+                pySegment.polyline = [self _coverToCLLocationsPolyline:busLine.polyline];
+                pySegment.mode     = PYBusingRouteStepModeType_Driving;
+            } else {
+                AMapWalking *walking = segment.walking;
+                pySegment.polyline = [self _coverToCLLocationsSteps:walking.steps];
+                pySegment.mode     = PYBusingRouteStepModeType_Walking;
             }
 
-            aRRPlan.steps = pySteps;
-
-            [routes addObject:aRRPlan];
+            [pySteps addObject:pySegment];
         }
 
-        PYBusingRouteSearchResult *result = [PYBusingRouteSearchResult new];
-        result.routes = routes;
+        aRRPlan.steps = pySteps;
 
+        [routes addObject:aRRPlan];
+    }
+
+    PYBusingRouteSearchResult *result = [PYBusingRouteSearchResult new];
+    result.routes = routes;
+
+    if (_searchBusingRouteComplete) {
         _searchBusingRouteComplete(result);
     }
-}
 
-
-- (void)onGeocodeSearchDone:(AMapGeocodeSearchRequest *)request response:(AMapGeocodeSearchResponse *)response; {
-    if (_searchCoordFromAddressComplete) {
-        if (response.geocodes.count > 0) {
-            AMapGeocode            *geocode = response.geocodes[0];
-            CLLocationCoordinate2D coor     = CLLocationCoordinate2DMake(geocode.location.latitude,
-                                                                         geocode.location.longitude);
-
-            _searchCoordFromAddressComplete(coor);
-        } else {
-            if (_searchFail) {
-                _searchFail([[NSError alloc] initWithDomain:@"没有查询到信息" code:0 userInfo:nil]);
-            }
-        }
+    if ([_searchDelegate respondsToSelector:@selector(pyMapSearcher:searchBusingRouteComplete:)]) {
+        [_searchDelegate pyMapSearcher:self searchBusingRouteComplete:result];
     }
 }
 
-- (void)onReGeocodeSearchDone:(AMapReGeocodeSearchRequest *)request response:(AMapReGeocodeSearchResponse *)response; {
+
+- (void)onGeocodeSearchDone:(AMapGeocodeSearchRequest *)request response:(AMapGeocodeSearchResponse *)response
+{
+    if (response.geocodes.count > 0) {
+        AMapGeocode            *geocode = response.geocodes[0];
+        CLLocationCoordinate2D coor     = CLLocationCoordinate2DMake(geocode.location.latitude,
+                                                                     geocode.location.longitude);
+
+        if (_searchCoordFromAddressComplete) {
+            _searchCoordFromAddressComplete(coor);
+        }
+
+        if ([_searchDelegate respondsToSelector:@selector(pyMapSearcher:searchCoordFromAddressComplete:)]) {
+            [_searchDelegate pyMapSearcher:self searchCoordFromAddressComplete:coor];
+        }
+    } else {
+        NSError *error = [[NSError alloc] initWithDomain:@"没有查询到信息" code:0 userInfo:nil];
+
+        if (_searchFail) {
+            _searchFail(error);
+        }
+
+        if ([_searchDelegate respondsToSelector:@selector(pyMapSearcher:searchFail:)]) {
+            [_searchDelegate pyMapSearcher:self searchFail:error];
+        }
+
+        return;
+    }
+}
+
+
+- (void)onReGeocodeSearchDone:(AMapReGeocodeSearchRequest *)request response:(AMapReGeocodeSearchResponse *)response
+{
+    PYMapAddress *address = [PYMapAddress new];
+
+    address.province       = response.regeocode.addressComponent.province;
+    address.city           = response.regeocode.addressComponent.city;
+    address.district       = response.regeocode.addressComponent.district;
+    address.street_number  = response.regeocode.addressComponent.streetNumber.number;
+    address.summaryAddress = response.regeocode.formattedAddress;
+
     if (_searchAddressFromCoordComplete) {
-        _searchAddressFromCoordComplete(response.regeocode.addressComponent.province,
-                                        response.regeocode.addressComponent.city,
-                                        response.regeocode.addressComponent.district,
-                                        response.regeocode.addressComponent.streetNumber.number,
-                                        response.regeocode.formattedAddress);
+        _searchAddressFromCoordComplete(address);
+    }
+
+    if ([_searchDelegate respondsToSelector:@selector(pyMapSearcher:searchAddressFromCoordComplete:)]) {
+        [_searchDelegate pyMapSearcher:self searchAddressFromCoordComplete:address];
     }
 }
 

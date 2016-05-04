@@ -7,53 +7,63 @@
 #ifdef _Map_MA
 
 #import "PYMapWithMA.h"
-#import "PYMAImageAnnotation.h"
+#import "PYMAAnnotationView.h"
 #import "MA+Add.h"
 
 
-/**
- *  @author YangRui, 16-02-26 10:02:46
- *
- *  地图显示标注视图类型
- */
-typedef NS_ENUM(NSUInteger, MAAnonotationType) {
-    MAAnonotationType_Normal,    //只有图片
-    MAAnonotationType_Callout,   //带有气泡
-};;
-
-
-@interface PYPointAnnotationSave : NSObject
+@interface PYAnnotationInfo : NSObject
 
 @property(nonatomic,strong) MAPointAnnotation* annotation;
 @property(nonatomic,strong) NSString*   uid;
 @property(nonatomic,strong) NSString*   imageName;
-@property(nonatomic,assign) MAAnonotationType type;
 
 @end
 
 
-@interface PYMapWithMA () <MAMapViewDelegate>
+typedef NS_ENUM(NSUInteger, ShapeType) {
+    ShapeType_Polygon,
+    ShapeType_Line,
+};
+
+
+@interface PYShapeInfo : NSObject
+
+@property(nonatomic,strong) UIColor* strokeColor;
+@property(nonatomic,strong) UIColor* fillColor;
+@property(nonatomic,assign) CGFloat lineWidth;
+@property(nonatomic,assign) ShapeType shapeType;
+@property(nonatomic,strong) MAShape* shape;
+
 @end
 
 
-@implementation PYMapWithMA {
-    MAMapView            *_mapView;
-    NSMutableDictionary *_overlayInfo;
-    NSMutableDictionary *_annotationInfo;
+
+@interface PYMapWithMA () <MAMapViewDelegate>{
+    MAMapView           *_mapView;
+    NSMutableDictionary<NSString*, PYShapeInfo*>* _shapeCache;
+    NSMutableDictionary<NSString*, PYAnnotationInfo*>*_annotationCache;
 }
 
-@synthesize annotationSelectAtUid = _annotationSelectAtUid;
-@synthesize annotationDeSelectAtUid = _annotationDeSelectAtUid;
-@synthesize annotationCalloutViewWithUid = _annotationCalloutViewWithUid;
-@synthesize viewForAnnotation = _viewForAnnotation;
+@end
+
+
+@implementation PYMapWithMA
+
 @synthesize mapDelegate = _mapDelegate;
+@synthesize viewForAnnotation = _viewForAnnotation;
+@synthesize calloutViewForAnnotation = _calloutViewForAnnotation;
+@synthesize annotationSelect = _annotationSelect;
+@synthesize annotationDeSelect = _annotationDeSelect;
+@synthesize mapDidChangeRegion = _mapDidChangeRegion;
+@synthesize mapWillChangeRegion = _mapWillChangeRegion;
+
 
 - (instancetype)init
 {
     if (self = [super init]) {
         _mapView        = [[MAMapView alloc] init];
-        _overlayInfo    = [[NSMutableDictionary alloc] init];
-        _annotationInfo = [[NSMutableDictionary alloc] init];
+        _shapeCache    = [[NSMutableDictionary alloc] init];
+        _annotationCache = [[NSMutableDictionary alloc] init];
 
         _mapView.delegate = self;
     }
@@ -81,38 +91,20 @@ typedef NS_ENUM(NSUInteger, MAAnonotationType) {
  */
 - (void)addAnnotation:(id <PYAnnotation>)annotation imageName:(NSString *)imgStr uid:(NSString *)uid
 {
-    [self _addAnnotation:annotation imageName:imgStr uid:uid withType:MAAnonotationType_Normal];
-
-}
-
-
-
-- (void)addCalloutAnnotation:(id<PYAnnotation>)annotation
-                         imageName:(NSString *)imgStr
-                               uid:(NSString *)uid{
-   
-    [self _addAnnotation:annotation imageName:imgStr uid:uid withType:MAAnonotationType_Callout];
-}
-
-- (void)_addAnnotation:(id<PYAnnotation>)annotation
-                        imageName:(NSString *)imgStr
-                              uid:(NSString *)uid
-                         withType:(MAAnonotationType)type{
-   
     if (uid == nil) return;
     
     MAPointAnnotation *pointAnnotation = [[MAPointAnnotation alloc] init];
     pointAnnotation._uid_      = uid;
     pointAnnotation.coordinate = [annotation coordinate];
     
-    PYPointAnnotationSave* save = [PYPointAnnotationSave new];
+    PYAnnotationInfo* save = [PYAnnotationInfo new];
     save.annotation  = pointAnnotation;
     save.imageName = imgStr;
-    save.type = type;
     
-    [_annotationInfo setObject:save forKey:uid];
+    [_annotationCache setObject:save forKey:uid];
     
     [_mapView addAnnotation:pointAnnotation];
+
 }
 
 
@@ -123,18 +115,18 @@ typedef NS_ENUM(NSUInteger, MAAnonotationType) {
  */
 - (void)removeAnnotations:(NSArray *)annotationUIDs
 {
-    NSMutableArray *pointAnnotations = [NSMutableArray array];
+    NSMutableArray *annotations = [NSMutableArray array];
     for (NSString* annotationUID in annotationUIDs) {
         if (![annotationUID isKindOfClass:[NSString class]]) return;
 
-        PYPointAnnotationSave *pointAnnotation = [_annotationInfo objectForKey:annotationUID];
-        if (pointAnnotation) {
-            [pointAnnotations addObject:pointAnnotation.annotation];
-            [_annotationInfo removeObjectForKey:annotationUID];
+        PYAnnotationInfo *annotationInfo = [_annotationCache objectForKey:annotationUID];
+        if (annotationInfo) {
+            [annotations addObject:annotationInfo.annotation];
+            [_annotationCache removeObjectForKey:annotationUID];
         }
     }
 
-    [_mapView removeAnnotations:pointAnnotations];
+    [_mapView removeAnnotations:annotations];
 }
 
 
@@ -145,10 +137,10 @@ typedef NS_ENUM(NSUInteger, MAAnonotationType) {
 */
 - (void)removeAnnotation:(NSString*)annotationUID;
 {
-    PYPointAnnotationSave *pointAnnotation  = [_annotationInfo objectForKey:annotationUID];
-    if (pointAnnotation) {
-        [_mapView removeAnnotation:pointAnnotation.annotation];
-        [_annotationInfo removeObjectForKey:annotationUID];
+    PYAnnotationInfo *annotationInfo  = [_annotationCache objectForKey:annotationUID];
+    if (annotationInfo) {
+        [_mapView removeAnnotation:annotationInfo.annotation];
+        [_annotationCache removeObjectForKey:annotationUID];
     }
 }
 
@@ -161,8 +153,8 @@ typedef NS_ENUM(NSUInteger, MAAnonotationType) {
  */
 - (void)setRegion:(PYCoordinateRegion)region animated:(BOOL)animated
 {
-    MACoordinateRegion aRegin = MACoordinateRegionMake(region.center,
-                                                     MACoordinateSpanMake(region.span.latitudeDelta, region.span.longitudeDelta));
+    MACoordinateSpan  span = MACoordinateSpanMake(region.span.latitudeDelta, region.span.longitudeDelta);
+    MACoordinateRegion aRegin = MACoordinateRegionMake(region.center, span);
 
     [_mapView setRegion:aRegin animated:animated];
 }
@@ -170,8 +162,10 @@ typedef NS_ENUM(NSUInteger, MAAnonotationType) {
 
 - (PYCoordinateRegion)regionThatFits:(PYCoordinateRegion)region
 {
-    MACoordinateRegion aRegin = MACoordinateRegionMake(region.center,
-                                                     MACoordinateSpanMake(region.span.latitudeDelta, region.span.longitudeDelta));
+    
+    MACoordinateSpan  span = MACoordinateSpanMake(region.span.latitudeDelta, region.span.longitudeDelta);
+    MACoordinateRegion aRegin = MACoordinateRegionMake(region.center, span);
+                                                     
     aRegin = [_mapView regionThatFits:aRegin];
 
     return PYCoordinateRegionMake(aRegin.center,
@@ -207,14 +201,14 @@ typedef NS_ENUM(NSUInteger, MAAnonotationType) {
     MAPolygon *overlay = [MAPolygon polygonWithPoints:temppoints count:coordinates.count];
     overlay._uid_ = uid;
     
-    NSDictionary *dicInfo = [NSDictionary dictionaryWithObjectsAndKeys:strokeColor, @"strokeColor"
-                             , fillColor, @"fillColor"
-                             , @(lineWidth), @"lineWidth"
-                             , @"Polygon", @"shape"
-                             , overlay, @"view"
-                             , nil];
+    PYShapeInfo* shapeInfo = [PYShapeInfo new];
+    shapeInfo.strokeColor = strokeColor;
+    shapeInfo.fillColor = fillColor;
+    shapeInfo.lineWidth = lineWidth;
+    shapeInfo.shape = overlay;
+    shapeInfo.shapeType = ShapeType_Polygon;
     
-    [_overlayInfo setObject:dicInfo forKey:uid];
+    [_shapeCache setObject:shapeInfo forKey:uid];
     
     [_mapView addOverlay:overlay];
     delete temppoints;
@@ -241,14 +235,15 @@ typedef NS_ENUM(NSUInteger, MAAnonotationType) {
     MAPolyline* line = [MAPolyline polylineWithPoints:temppoints count:coordinates.count];
     line._uid_ = uid;
 
-    NSDictionary *dicInfo = [NSDictionary dictionaryWithObjectsAndKeys
-                             :strokeColor, @"strokeColor"
-                             , @(lineWidth), @"lineWidth"
-                             , @"Polyline", @"shape"
-                             , line, @"view"
-                             , nil];
+    
+    PYShapeInfo* shapeInfo = [PYShapeInfo new];
+    shapeInfo.strokeColor = strokeColor;
+    shapeInfo.lineWidth = lineWidth;
+    shapeInfo.shape = line;
+    shapeInfo.shapeType = ShapeType_Polygon;
+    
+    [_shapeCache setObject:shapeInfo forKey:uid];
 
-    [_overlayInfo setObject:dicInfo forKey:uid];
 
     [_mapView addOverlay:line];
     delete temppoints;
@@ -308,8 +303,6 @@ typedef NS_ENUM(NSUInteger, MAAnonotationType) {
                                                        span);
     
     return region;
-    
-
 }
 
 /*!
@@ -323,26 +316,32 @@ typedef NS_ENUM(NSUInteger, MAAnonotationType) {
 - (MAOverlayView *)mapView:(MAMapView *)mapView viewForOverlay:(id <MAOverlay>)overlay
 {
     if ([overlay isKindOfClass:[MAShape class]]) {
+        
         MAShape* shape = (MAShape*)overlay;
         NSString* uid = shape._uid_;
         
-        NSDictionary *dic = [_overlayInfo objectForKey:uid];
-        if (dic && [[dic objectForKey:@"shape"] isEqualToString:@"Polygon"]) {
+        PYShapeInfo *shapeInfo = [_shapeCache objectForKey:uid];
+        
+        ///添加多边形
+        if (shapeInfo && ShapeType_Polygon == shapeInfo.shapeType) {
+            
             MAPolygonView *cutomView = [[MAPolygonView alloc] initWithOverlay:overlay];
             
-            cutomView.strokeColor = [dic objectForKey:@"strokeColor"];
-            cutomView.fillColor   = [dic objectForKey:@"fillColor"];
-            cutomView.lineWidth   = [[dic objectForKey:@"lineWidth"] floatValue];
+            cutomView.strokeColor = shapeInfo.strokeColor;
+            cutomView.fillColor   = shapeInfo.fillColor;
+            cutomView.lineWidth   = shapeInfo.lineWidth;
             
             return cutomView;
-        }else if (dic && [[dic objectForKey:@"shape"] isEqualToString:@"Polyline"]){
+         
+        ///添加线条
+        }else if (shapeInfo && ShapeType_Line == shapeInfo.shapeType){
+            
             MAPolylineView *cutomView = [[MAPolylineView alloc] initWithOverlay:overlay];
             
-            cutomView.strokeColor = [dic objectForKey:@"strokeColor"];
-            cutomView.lineWidth   = [[dic objectForKey:@"lineWidth"] floatValue];
+            cutomView.strokeColor = shapeInfo.strokeColor;
+            cutomView.lineWidth   = shapeInfo.lineWidth;
             
             return cutomView;
-
         }
 
         return nil;
@@ -361,36 +360,31 @@ typedef NS_ENUM(NSUInteger, MAAnonotationType) {
         MAPointAnnotation* pointAnnotation = (MAPointAnnotation*)annotation;
         NSString* uid = pointAnnotation._uid_;
         
-        PYMAImageAnnotation *annotationView = (PYMAImageAnnotation *)[mapView dequeueReusableAnnotationViewWithIdentifier:uid];
+        PYMAAnnotationView *annotationView = (PYMAAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:uid];
         
         if (annotationView == nil) {
-            annotationView = [[PYMAImageAnnotation alloc] initWithAnnotation:annotation reuseIdentifier:uid];
+            annotationView = [[PYMAAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:uid];
         }
        
-        PYPointAnnotationSave *annotationSave = [_annotationInfo objectForKey:uid];
+        PYAnnotationInfo *annotationSave = [_annotationCache objectForKey:uid];
         annotationView.other = uid;
         
-        //动画annotation
+        //viewForAnnotationWithId 优先级高于添加时候的设定
         if ([self.mapDelegate respondsToSelector:@selector(pyMap:viewForAnnotationWithId:)]) {
             
             UIView* showView = [self.mapDelegate pyMap:self viewForAnnotationWithId:uid];
-            if (nil == showView) return nil;
             [annotationView setShowView:showView];
         
         }else{
  
             NSString* imageName = annotationSave.imageName;
-            if (nil == imageName) return nil;
-            
             annotationView.image = [UIImage imageNamed:imageName];
         }
         
-        if (annotationSave.type == MAAnonotationType_Callout) {
-           
-            if (self.annotationCalloutViewWithUid) {
-                UIView* calloutView = self.annotationCalloutViewWithUid(uid);
-                [annotationView changeCalloutView:calloutView];
-            }
+        ///气泡
+        if (self.calloutViewForAnnotation) {
+            UIView* calloutView = self.calloutViewForAnnotation(uid);
+            [annotationView changeCalloutView:calloutView];
         }
         
         return annotationView;
@@ -403,10 +397,10 @@ typedef NS_ENUM(NSUInteger, MAAnonotationType) {
 
 -(void)mapView:(MAMapView *)mapView didSelectAnnotationView:(MAAnnotationView *)view{
 
-    if (![view isKindOfClass:[PYMAImageAnnotation class]]) return;
+    if (![view isKindOfClass:[PYMAAnnotationView class]]) return;
     
     if (self.annotationSelectAtUid) {
-        self.annotationSelectAtUid(((PYMAImageAnnotation*)view).other);
+        self.annotationSelectAtUid(((PYMAAnnotationView*)view).other);
     }
 }
 
@@ -414,10 +408,10 @@ typedef NS_ENUM(NSUInteger, MAAnonotationType) {
 
 -(void)mapView:(MAMapView *)mapView didDeselectAnnotationView:(MAAnnotationView *)view{
 
-    if (![view isKindOfClass:[PYMAImageAnnotation class]]) return;
+    if (![view isKindOfClass:[PYMAAnnotationView class]]) return;
     
     if (self.annotationDeSelectAtUid) {
-        self.annotationDeSelectAtUid(((PYMAImageAnnotation*)view).other);
+        self.annotationDeSelectAtUid(((PYMAAnnotationView*)view).other);
     }
 
 }
@@ -456,14 +450,14 @@ typedef NS_ENUM(NSUInteger, MAAnonotationType) {
 - (void)removeAllAnnotations
 {
     [_mapView removeAnnotations:_mapView.annotations];
-    [_annotationInfo removeAllObjects];
+    [_annotationCache removeAllObjects];
 }
 
 
 - (void)removeOverlayView:(NSString *)uid
 {
-    [_mapView removeOverlay:[[_overlayInfo objectForKey:uid] objectForKey:@"view"]];
-    [_overlayInfo removeObjectForKey:uid];
+    [_mapView removeOverlay:[[_shapeCache objectForKey:uid] objectForKey:@"view"]];
+    [_shapeCache removeObjectForKey:uid];
 }
 
 
@@ -479,11 +473,11 @@ typedef NS_ENUM(NSUInteger, MAAnonotationType) {
         
         if (![aAnnotation isKindOfClass:[MAPointAnnotation class]]) continue;
         
-        PYPointAnnotationSave *annotationSave = [_annotationInfo objectForKey:aAnnotation._uid_];
+        PYAnnotationInfo *annotationSave = [_annotationCache objectForKey:aAnnotation._uid_];
         if (annotationSave.type != MAAnonotationType_Callout) continue;
         
-        PYMAImageAnnotation *annotationView  = (PYMAImageAnnotation*)[_mapView viewForAnnotation:aAnnotation];
-        if (![annotationView isKindOfClass:[PYMAImageAnnotation class]]) continue;
+        PYMAAnnotationView *annotationView  = (PYMAAnnotationView*)[_mapView viewForAnnotation:aAnnotation];
+        if (![annotationView isKindOfClass:[PYMAAnnotationView class]]) continue;
         
        
         if (self.annotationCalloutViewWithUid) {
@@ -497,7 +491,13 @@ typedef NS_ENUM(NSUInteger, MAAnonotationType) {
 @end
 
 
-@implementation PYPointAnnotationSave
+
+
+@implementation PYAnnotationInfo
+
+@end
+
+@implementation PYShapeInfo
 
 @end
 

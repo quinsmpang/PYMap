@@ -1,5 +1,5 @@
 //
-//  PYMAImageAnnotation.m
+//  PYMAAnnotationView.m
 //  YR
 //
 //  Created by YR on 15-4-28.
@@ -7,9 +7,9 @@
 //
 #ifdef _Map_MA
 
-#import "PYMAImageAnnotation.h"
+#import "PYMAAnnotationView.h"
 
-@implementation PYMAImageAnnotation{
+@implementation PYMAAnnotationView{
     UIView* _curCallOutView;
     UIView* _showView;
 }

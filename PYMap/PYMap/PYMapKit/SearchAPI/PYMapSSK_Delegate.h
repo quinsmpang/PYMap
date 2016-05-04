@@ -20,7 +20,7 @@
 
 
 
-@protocol PYMapSSKDelegate
+@protocol PYMapSSKDelegate <NSObject>
 
 /**
  * 检索关键字成功后的回调

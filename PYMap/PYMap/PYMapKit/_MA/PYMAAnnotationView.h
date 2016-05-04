@@ -1,5 +1,5 @@
 //
-//  PYMAImageAnnotation.h
+//  PYMAAnnotationView.h
 //  YR
 //
 //  Created by YR on 15-4-28.
@@ -9,12 +9,12 @@
 #import <MAMapKit/MAAnnotationView.h>
 
 /**
- *  @author YangRui, 16-02-26 09:02:14
- *
- *  只有一个图标
+ *  标记视图
  */
-@interface PYMAImageAnnotation : MAAnnotationView
+@interface PYMAAnnotationView : MAAnnotationView
+
 @property (nonatomic, strong) NSString* other; //相当于tag
+
 /**
  *  改变泡泡视图
  */
