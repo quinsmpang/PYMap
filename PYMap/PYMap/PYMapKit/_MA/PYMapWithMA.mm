@@ -50,12 +50,6 @@ typedef NS_ENUM(NSUInteger, ShapeType) {
 @implementation PYMapWithMA
 
 @synthesize mapDelegate = _mapDelegate;
-@synthesize viewForAnnotation = _viewForAnnotation;
-@synthesize calloutViewForAnnotation = _calloutViewForAnnotation;
-@synthesize annotationSelect = _annotationSelect;
-@synthesize annotationDeSelect = _annotationDeSelect;
-@synthesize mapDidChangeRegion = _mapDidChangeRegion;
-@synthesize mapWillChangeRegion = _mapWillChangeRegion;
 
 
 - (instancetype)init
@@ -285,7 +279,6 @@ typedef NS_ENUM(NSUInteger, ShapeType) {
  */
 - (void)setCenterCoordinate:(CLLocationCoordinate2D)coordinate zoomLevel:(double)newZoomLevel animated:(BOOL)animated{
 
-//    [_mapView setCenterCoordinate:coordinate zoomLevel:newZoomLevel animated:animated];
     [_mapView setCenterCoordinate:coordinate];
     [_mapView setZoomLevel:newZoomLevel  animated:animated];
 }
@@ -370,9 +363,9 @@ typedef NS_ENUM(NSUInteger, ShapeType) {
         annotationView.other = uid;
         
         //viewForAnnotationWithId 优先级高于添加时候的设定
-        if ([self.mapDelegate respondsToSelector:@selector(pyMap:viewForAnnotationWithId:)]) {
+        if ([_mapDelegate respondsToSelector:@selector(pyMap:viewForAnnotationWithId:)]) {
             
-            UIView* showView = [self.mapDelegate pyMap:self viewForAnnotationWithId:uid];
+            UIView* showView = [_mapDelegate pyMap:self viewForAnnotationWithId:uid];
             [annotationView setShowView:showView];
         
         }else{
@@ -382,8 +375,8 @@ typedef NS_ENUM(NSUInteger, ShapeType) {
         }
         
         ///气泡
-        if (self.calloutViewForAnnotation) {
-            UIView* calloutView = self.calloutViewForAnnotation(uid);
+        if ([_mapDelegate respondsToSelector:@selector(pyMap:calloutViewForAnnotationWithId:)]) {
+            UIView* calloutView = [_mapDelegate pyMap:self calloutViewForAnnotationWithId:uid]
             [annotationView changeCalloutView:calloutView];
         }
         
@@ -399,8 +392,8 @@ typedef NS_ENUM(NSUInteger, ShapeType) {
 
     if (![view isKindOfClass:[PYMAAnnotationView class]]) return;
     
-    if (self.annotationSelectAtUid) {
-        self.annotationSelectAtUid(((PYMAAnnotationView*)view).other);
+    if ([_mapDelegate respondsToSelector:@selector(pyMap:annotationSelectAtUid:)]) {
+        [_mapDelegate pyMap:self annotationSelectAtUid:((PYMAAnnotationView*)view).other];
     }
 }
 
@@ -409,11 +402,10 @@ typedef NS_ENUM(NSUInteger, ShapeType) {
 -(void)mapView:(MAMapView *)mapView didDeselectAnnotationView:(MAAnnotationView *)view{
 
     if (![view isKindOfClass:[PYMAAnnotationView class]]) return;
-    
-    if (self.annotationDeSelectAtUid) {
-        self.annotationDeSelectAtUid(((PYMAAnnotationView*)view).other);
+   
+    if ([_mapDelegate respondsToSelector:@selector(pyMap:annotationDeSelectAtUid:)]) {
+        [_mapDelegate pyMap:self annotationDeSelectAtUid:((PYMAAnnotationView*)view).other];
     }
-
 }
 
 
@@ -433,8 +425,6 @@ typedef NS_ENUM(NSUInteger, ShapeType) {
 
 -(void)mapView:(MAMapView *)mapView regionWillChangeAnimated:(BOOL)animated{
 
-    if (![_mapDelegate respondsToSelector:@selector(pyMap:regionWillChangeFrom:withAnimated:)]) return;
-    
     
     PYCoordinateSpan  span = PYCoordinateSpanMake(mapView.region.span.latitudeDelta,
                                                   mapView.region.span.longitudeDelta);
@@ -442,7 +432,9 @@ typedef NS_ENUM(NSUInteger, ShapeType) {
     PYCoordinateRegion region = PYCoordinateRegionMake(mapView.region.center,
                                                        span);
     
-    [_mapDelegate pyMap:self regionWillChangeFrom:region withAnimated:animated];
+    if (![_mapDelegate respondsToSelector:@selector(pyMap:regionWillChangeFrom:withAnimated:)]) {
+        [_mapDelegate pyMap:self regionWillChangeFrom:region withAnimated:animated];
+    }
     
 }
 
@@ -456,7 +448,7 @@ typedef NS_ENUM(NSUInteger, ShapeType) {
 
 - (void)removeOverlayView:(NSString *)uid
 {
-    [_mapView removeOverlay:[[_shapeCache objectForKey:uid] objectForKey:@"view"]];
+    [_mapView removeOverlay:[_shapeCache objectForKey:uid].shape];
     [_shapeCache removeObjectForKey:uid];
 }
 
@@ -473,15 +465,12 @@ typedef NS_ENUM(NSUInteger, ShapeType) {
         
         if (![aAnnotation isKindOfClass:[MAPointAnnotation class]]) continue;
         
-        PYAnnotationInfo *annotationSave = [_annotationCache objectForKey:aAnnotation._uid_];
-        if (annotationSave.type != MAAnonotationType_Callout) continue;
-        
         PYMAAnnotationView *annotationView  = (PYMAAnnotationView*)[_mapView viewForAnnotation:aAnnotation];
         if (![annotationView isKindOfClass:[PYMAAnnotationView class]]) continue;
         
        
-        if (self.annotationCalloutViewWithUid) {
-            UIView* calloutView = self.annotationCalloutViewWithUid(aAnnotation._uid_);
+        if ([_mapDelegate respondsToSelector:@selector(pyMap:calloutViewForAnnotationWithId:)]) {
+            UIView* calloutView = [_mapDelegate pyMap:self calloutViewForAnnotationWithId:aAnnotation._uid_];
             [annotationView changeCalloutView:calloutView];
         }
         

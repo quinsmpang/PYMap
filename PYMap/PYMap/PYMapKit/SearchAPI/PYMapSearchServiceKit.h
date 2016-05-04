@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
-#import "PYMapSSK_Block.h"
 #import "PYMapSSK_Delegate.h"
 
 
@@ -38,7 +37,7 @@ typedef NS_ENUM(NSUInteger, PYBusingRoutePolicy)
 /**
  *  搜索服务协议
  */
-@protocol PYMapSearcherProtocal <NSObject, PYMapSSK_Block, PYMapSSK_Delegate>
+@protocol PYMapSearcherProtocal <NSObject, PYMapSSK_Delegate>
 
 
 /**

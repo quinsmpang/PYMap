@@ -9,13 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "PYMapGeometry.h"
 #import "PYAnnotation.h"
-#import "PYMapKit_Block.h"
 #import "PYMapKit_Delegate.h"
 
 /**
  *  地图协议
  */
-@protocol PYMapKitProtocal <NSObject, PYMapKit_Block, PYMapKit_Delegate>
+@protocol PYMapKitProtocal <NSObject, PYMapKit_Delegate>
 
 /*!
  *  @brief  当前地图视图

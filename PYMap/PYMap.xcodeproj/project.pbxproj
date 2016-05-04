@@ -101,7 +101,6 @@
 		9A6C0CE01CD8556B00D3214A /* PYMapFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMapFactory.h; sourceTree = "<group>"; };
 		9A6C0CE11CD8556B00D3214A /* PYMapFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PYMapFactory.m; sourceTree = "<group>"; };
 		9A6C0CE21CD8556B00D3214A /* PYMapKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMapKit.h; sourceTree = "<group>"; };
-		9A6C0CE31CD8556B00D3214A /* PYMapKit_Block.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMapKit_Block.h; sourceTree = "<group>"; };
 		9A6C0CE41CD8556B00D3214A /* PYMapKit_Delegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMapKit_Delegate.h; sourceTree = "<group>"; };
 		9A6C0CE71CD8556B00D3214A /* PYCoordCover.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYCoordCover.h; sourceTree = "<group>"; };
 		9A6C0CE81CD8556B00D3214A /* PYCoordCover.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PYCoordCover.m; sourceTree = "<group>"; };
@@ -109,7 +108,6 @@
 		9A6C0CEB1CD8556B00D3214A /* PYMapSearchResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMapSearchResult.h; sourceTree = "<group>"; };
 		9A6C0CEC1CD8556B00D3214A /* PYMapSearchResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PYMapSearchResult.m; sourceTree = "<group>"; };
 		9A6C0CED1CD8556B00D3214A /* PYMapSearchServiceKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMapSearchServiceKit.h; sourceTree = "<group>"; };
-		9A6C0CEF1CD8556B00D3214A /* PYMapSSK_Block.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMapSSK_Block.h; sourceTree = "<group>"; };
 		9A6C0CF01CD8556B00D3214A /* PYMapSSK_Delegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMapSSK_Delegate.h; sourceTree = "<group>"; };
 		9A6C0D031CD872BC00D3214A /* PYMapApiKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMapApiKey.h; sourceTree = "<group>"; };
 		9A6C0D041CD872F800D3214A /* PYAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYAnnotation.h; sourceTree = "<group>"; };
@@ -293,7 +291,6 @@
 				9A6C0CE01CD8556B00D3214A /* PYMapFactory.h */,
 				9A6C0CE11CD8556B00D3214A /* PYMapFactory.m */,
 				9A6C0CE21CD8556B00D3214A /* PYMapKit.h */,
-				9A6C0CE31CD8556B00D3214A /* PYMapKit_Block.h */,
 				9A6C0CE41CD8556B00D3214A /* PYMapKit_Delegate.h */,
 			);
 			path = MapAPI;
@@ -305,7 +302,6 @@
 				9A6C0CEB1CD8556B00D3214A /* PYMapSearchResult.h */,
 				9A6C0CEC1CD8556B00D3214A /* PYMapSearchResult.m */,
 				9A6C0CED1CD8556B00D3214A /* PYMapSearchServiceKit.h */,
-				9A6C0CEF1CD8556B00D3214A /* PYMapSSK_Block.h */,
 				9A6C0CF01CD8556B00D3214A /* PYMapSSK_Delegate.h */,
 				9A6C0D081CD8749100D3214A /* PYMapSearchServiceFactory.h */,
 				9A6C0D091CD8749100D3214A /* PYMapSearchServiceFactory.m */,
