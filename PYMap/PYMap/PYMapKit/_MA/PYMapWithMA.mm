@@ -15,6 +15,7 @@
 
 @property(nonatomic,strong) MAPointAnnotation* annotation;
 @property(nonatomic,strong) NSString*   uid;
+@property(nonatomic,strong) NSString*   reuseId;
 @property(nonatomic,strong) NSString*   imageName;
 
 @end
@@ -83,7 +84,10 @@ typedef NS_ENUM(NSUInteger, ShapeType) {
  *
  *  @param annotation 要添加的标注
  */
-- (void)addAnnotation:(id <PYAnnotation>)annotation imageName:(NSString *)imgStr uid:(NSString *)uid
+- (void)addAnnotation:(id <PYAnnotation>)annotation
+            imageName:(NSString *)imgStr
+                  uid:(NSString *)uid
+              reuseId:(NSString *)reuseId
 {
     if (uid == nil) return;
     
@@ -94,6 +98,7 @@ typedef NS_ENUM(NSUInteger, ShapeType) {
     PYAnnotationInfo* save = [PYAnnotationInfo new];
     save.annotation  = pointAnnotation;
     save.imageName = imgStr;
+    save.reuseId   = reuseId;
     
     [_annotationCache setObject:save forKey:uid];
     
@@ -353,14 +358,18 @@ typedef NS_ENUM(NSUInteger, ShapeType) {
         MAPointAnnotation* pointAnnotation = (MAPointAnnotation*)annotation;
         NSString* uid = pointAnnotation._uid_;
         
-        PYMAAnnotationView *annotationView = (PYMAAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:uid];
+        PYAnnotationInfo *annotationSave = [_annotationCache objectForKey:uid];
+        NSString* reuseId = annotationSave.reuseId;
+        
+        PYMAAnnotationView *annotationView = (PYMAAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:reuseId];
         
         if (annotationView == nil) {
-            annotationView = [[PYMAAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:uid];
+            annotationView = [[PYMAAnnotationView alloc] initWithAnnotation:annotation
+                                                            reuseIdentifier:reuseId];
         }
        
-        PYAnnotationInfo *annotationSave = [_annotationCache objectForKey:uid];
-        annotationView.other = uid;
+        
+        annotationView.annotationId = uid;
         
         //viewForAnnotationWithId 优先级高于添加时候的设定
         if ([_mapDelegate respondsToSelector:@selector(pyMap:viewForAnnotationWithId:)]) {
@@ -393,7 +402,7 @@ typedef NS_ENUM(NSUInteger, ShapeType) {
     if (![view isKindOfClass:[PYMAAnnotationView class]]) return;
     
     if ([_mapDelegate respondsToSelector:@selector(pyMap:annotationSelectAtUid:)]) {
-        [_mapDelegate pyMap:self annotationSelectAtUid:((PYMAAnnotationView*)view).other];
+        [_mapDelegate pyMap:self annotationSelectAtUid:((PYMAAnnotationView*)view).annotationId];
     }
 }
 
@@ -404,7 +413,7 @@ typedef NS_ENUM(NSUInteger, ShapeType) {
     if (![view isKindOfClass:[PYMAAnnotationView class]]) return;
    
     if ([_mapDelegate respondsToSelector:@selector(pyMap:annotationDeSelectAtUid:)]) {
-        [_mapDelegate pyMap:self annotationDeSelectAtUid:((PYMAAnnotationView*)view).other];
+        [_mapDelegate pyMap:self annotationDeSelectAtUid:((PYMAAnnotationView*)view).annotationId];
     }
 }
 

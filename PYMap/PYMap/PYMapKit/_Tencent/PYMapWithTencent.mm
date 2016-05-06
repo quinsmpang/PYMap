@@ -15,8 +15,9 @@
 @interface PYAnnotationInfo : NSObject
 
 @property(nonatomic,strong) QPointAnnotation* annotation;
-@property(nonatomic,strong) NSString*   uid;
-@property(nonatomic,strong) NSString*   imageName;
+@property(nonatomic,strong) NSString*  uid;
+@property(nonatomic,strong) NSString*  imageName;
+@property(nonatomic,strong) NSString*  reuseId;
 
 @end
 
@@ -81,7 +82,10 @@ typedef NS_ENUM(NSUInteger, ShapeType) {
  *
  *  @param annotation 要添加的标注
  */
-- (void)addAnnotation:(id <PYAnnotation>)annotation imageName:(NSString *)imgStr uid:(NSString *)uid
+- (void)addAnnotation:(id <PYAnnotation>)annotation
+            imageName:(NSString *)imgStr
+                  uid:(NSString *)uid
+              reuseId:(NSString *)reuseId
 {
     if (uid == nil) return;
     
@@ -92,6 +96,7 @@ typedef NS_ENUM(NSUInteger, ShapeType) {
     PYAnnotationInfo* save = [PYAnnotationInfo new];
     save.annotation  = pointAnnotation;
     save.imageName = imgStr;
+    save.reuseId   = reuseId;
     
     [_annotationCache setObject:save forKey:uid];
     
@@ -348,14 +353,17 @@ typedef NS_ENUM(NSUInteger, ShapeType) {
         QPointAnnotation* pointAnnotation = annotation;
         NSString* uid = pointAnnotation._uid_;
         
-        PYTencentAnnotationView *annotationView = (PYTencentAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:uid];
+        PYAnnotationInfo *annotationSave = [_annotationCache objectForKey:uid];
+        NSString* reuseId = annotationSave.uid;
+        
+        PYTencentAnnotationView *annotationView = (PYTencentAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:reuseId];
         
         if (annotationView == nil) {
-            annotationView = [[PYTencentAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:uid];
+            annotationView = [[PYTencentAnnotationView alloc] initWithAnnotation:annotation
+                                                                 reuseIdentifier:reuseId];
         }
        
-        PYAnnotationInfo *annotationSave = [_annotationCache objectForKey:uid];
-        annotationView.other = uid;
+        annotationView.annotationId = uid;
         
         //动画annotation
         if ([self.mapDelegate respondsToSelector:@selector(pyMap:viewForAnnotationWithId:)]) {
@@ -391,7 +399,7 @@ typedef NS_ENUM(NSUInteger, ShapeType) {
     if (![view isKindOfClass:[PYTencentAnnotationView class]]) return;
     
     if ([_mapDelegate respondsToSelector:@selector(pyMap:annotationSelectAtUid:)]) {
-        [_mapDelegate pyMap:self annotationSelectAtUid:((PYTecentAnnotationView*)view).other];
+        [_mapDelegate pyMap:self annotationSelectAtUid:((PYTecentAnnotationView*)view).annotationId];
     }
 }
 
@@ -402,7 +410,7 @@ typedef NS_ENUM(NSUInteger, ShapeType) {
     if (![view isKindOfClass:[PYTencentAnnotationView class]]) return;
     
     if ([_mapDelegate respondsToSelector:@selector(pyMap:annotationDeSelectAtUid:)]) {
-        [_mapDelegate pyMap:self annotationDeSelectAtUid:((PYTecentAnnotationView*)view).other];
+        [_mapDelegate pyMap:self annotationDeSelectAtUid:((PYTecentAnnotationView*)view).annotationId];
     }
 
 }
@@ -478,6 +486,11 @@ typedef NS_ENUM(NSUInteger, ShapeType) {
 
 
 @implementation PYAnnotationInfo
+
+@end
+
+
+@implementation PYShapeInfo
 
 @end
 

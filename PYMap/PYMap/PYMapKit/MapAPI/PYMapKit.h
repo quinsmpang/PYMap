@@ -104,7 +104,8 @@
  */
 - (void)addAnnotation:(id <PYAnnotation>)annotation
             imageName:(NSString *)imgStr
-                  uid:(NSString *)uid;
+                  uid:(NSString *)uid
+              reuseId:(NSString*)reuseId;
 
 /*!
  *  @brief  移除一个标注

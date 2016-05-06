@@ -14,7 +14,7 @@
  *  只有一个图标
  */
 @interface PYTencentAnnotationView : QAnnotationView
-@property (nonatomic, strong) NSString* other; //相当于tag
+@property (nonatomic, strong) NSString* annotationId;
 /**
  *  改变泡泡视图
  */
