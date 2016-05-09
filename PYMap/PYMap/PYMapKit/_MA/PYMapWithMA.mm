@@ -33,7 +33,7 @@ typedef NS_ENUM(NSUInteger, ShapeType) {
 @property(nonatomic,strong) UIColor* fillColor;
 @property(nonatomic,assign) CGFloat lineWidth;
 @property(nonatomic,assign) ShapeType shapeType;
-@property(nonatomic,strong) MAShape* shape;
+@property(nonatomic,strong) id<MAOverlay> shape;
 
 @end
 
@@ -385,7 +385,7 @@ typedef NS_ENUM(NSUInteger, ShapeType) {
         
         ///气泡
         if ([_mapDelegate respondsToSelector:@selector(pyMap:calloutViewForAnnotationWithId:)]) {
-            UIView* calloutView = [_mapDelegate pyMap:self calloutViewForAnnotationWithId:uid]
+            UIView* calloutView = [_mapDelegate pyMap:self calloutViewForAnnotationWithId:uid];
             [annotationView changeCalloutView:calloutView];
         }
         

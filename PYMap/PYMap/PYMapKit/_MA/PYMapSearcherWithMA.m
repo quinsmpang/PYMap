@@ -324,11 +324,16 @@
 {
     if ([_searchDelegate respondsToSelector:@selector(pyMapSearcher:searchAddressFromCoordComplete:)]) {
         PYMapAddress *address = [PYMapAddress new];
+        
+        
+        NSString* streetNumber = [NSString stringWithFormat:@"%@%@",
+                                  response.regeocode.addressComponent.streetNumber.street,
+                                  response.regeocode.addressComponent.streetNumber.number];
 
         address.province       = response.regeocode.addressComponent.province;
         address.city           = response.regeocode.addressComponent.city;
         address.district       = response.regeocode.addressComponent.district;
-        address.street_number  = response.regeocode.addressComponent.streetNumber.number;
+        address.street_number  = streetNumber;
         address.summaryAddress = response.regeocode.formattedAddress;
 
         [_searchDelegate pyMapSearcher:self searchAddressFromCoordComplete:address];

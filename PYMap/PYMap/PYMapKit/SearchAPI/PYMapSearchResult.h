@@ -29,11 +29,11 @@
  */
 @interface PYMapAddress : NSObject
 
-@property (readonly, nonatomic) NSString* province;
-@property (readonly, nonatomic) NSString* city;
-@property (readonly, nonatomic) NSString* district;
-@property (readonly, nonatomic) NSString* street_number;
-@property (readonly, nonatomic) NSString* summaryAddress; /*简明地址*/
+@property (strong, nonatomic) NSString* province;
+@property (strong, nonatomic) NSString* city;
+@property (strong, nonatomic) NSString* district;
+@property (strong, nonatomic) NSString* street_number;
+@property (strong, nonatomic) NSString* summaryAddress; /*简明地址*/
 
 @end
 
