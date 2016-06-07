@@ -364,6 +364,8 @@ typedef NS_ENUM(NSUInteger, ShapeType) {
         }
        
         annotationView.annotationId = uid;
+        annotationView.centerOffset = CGPointMake(0,
+                                                  -annotationView.image.size.height * 0.5f);
         
         //动画annotation
         if ([self.mapDelegate respondsToSelector:@selector(pyMap:viewForAnnotationWithId:)]) {
@@ -382,7 +384,7 @@ typedef NS_ENUM(NSUInteger, ShapeType) {
 
         ///气泡
         if ([_mapDelegate respondsToSelector:@selector(pyMap:calloutViewForAnnotationWithId:)]) {
-            UIView* calloutView = [_mapDelegate pyMap:self calloutViewForAnnotationWithId:uid]
+            UIView* calloutView = [_mapDelegate pyMap:self calloutViewForAnnotationWithId:uid];
             [annotationView changeCalloutView:calloutView];
         }
         
@@ -399,7 +401,7 @@ typedef NS_ENUM(NSUInteger, ShapeType) {
     if (![view isKindOfClass:[PYTencentAnnotationView class]]) return;
     
     if ([_mapDelegate respondsToSelector:@selector(pyMap:annotationSelectAtUid:)]) {
-        [_mapDelegate pyMap:self annotationSelectAtUid:((PYTecentAnnotationView*)view).annotationId];
+        [_mapDelegate pyMap:self annotationSelectAtUid:((PYTencentAnnotationView*)view).annotationId];
     }
 }
 
@@ -410,7 +412,7 @@ typedef NS_ENUM(NSUInteger, ShapeType) {
     if (![view isKindOfClass:[PYTencentAnnotationView class]]) return;
     
     if ([_mapDelegate respondsToSelector:@selector(pyMap:annotationDeSelectAtUid:)]) {
-        [_mapDelegate pyMap:self annotationDeSelectAtUid:((PYTecentAnnotationView*)view).annotationId];
+        [_mapDelegate pyMap:self annotationDeSelectAtUid:((PYTencentAnnotationView*)view).annotationId];
     }
 
 }

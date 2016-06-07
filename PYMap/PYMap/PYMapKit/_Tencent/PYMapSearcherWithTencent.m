@@ -205,7 +205,7 @@
         PYDrivingRouteSearchResult *result = [PYDrivingRouteSearchResult new];
         result.routes = routes;
         
-        _searchDelegate pyMapSearcher:self searchDriveRouteComplete:result];
+        [_searchDelegate pyMapSearcher:self searchDriveRouteComplete:result];
     }
 
 }

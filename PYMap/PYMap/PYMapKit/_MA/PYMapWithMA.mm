@@ -381,6 +381,8 @@ typedef NS_ENUM(NSUInteger, ShapeType) {
  
             NSString* imageName = annotationSave.imageName;
             annotationView.image = [UIImage imageNamed:imageName];
+            annotationView.centerOffset = CGPointMake(0,
+                                                      -annotationView.image.size.height * 0.5f);
         }
         
         ///气泡
