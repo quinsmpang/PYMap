@@ -7,6 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9A3D69FE1D24EA9A002C5665 /* BMK+Add.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A3D69D21D24EA9A002C5665 /* BMK+Add.m */; };
+		9A3D69FF1D24EA9A002C5665 /* PYBaiduImageAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A3D69D41D24EA9A002C5665 /* PYBaiduImageAnnotation.m */; };
+		9A3D6A001D24EA9A002C5665 /* PYMapSearcherWithBaidu.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A3D69D61D24EA9A002C5665 /* PYMapSearcherWithBaidu.m */; };
+		9A3D6A011D24EA9A002C5665 /* PYMapWithBaidu.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9A3D69D81D24EA9A002C5665 /* PYMapWithBaidu.mm */; };
+		9A3D6A021D24EA9A002C5665 /* MA+Add.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A3D69DB1D24EA9A002C5665 /* MA+Add.m */; };
+		9A3D6A031D24EA9A002C5665 /* PYMAAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A3D69DD1D24EA9A002C5665 /* PYMAAnnotationView.m */; };
+		9A3D6A041D24EA9A002C5665 /* PYMapSearcherWithMA.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A3D69DF1D24EA9A002C5665 /* PYMapSearcherWithMA.m */; };
+		9A3D6A051D24EA9A002C5665 /* PYMapWithMA.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9A3D69E11D24EA9A002C5665 /* PYMapWithMA.mm */; };
+		9A3D6A061D24EA9A002C5665 /* PYMapSearcherWithTencent.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A3D69E41D24EA9A002C5665 /* PYMapSearcherWithTencent.m */; };
+		9A3D6A071D24EA9A002C5665 /* PYMapWithTencent.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9A3D69E61D24EA9A002C5665 /* PYMapWithTencent.mm */; };
+		9A3D6A081D24EA9A002C5665 /* PYTencentAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A3D69E81D24EA9A002C5665 /* PYTencentAnnotationView.m */; };
+		9A3D6A091D24EA9A002C5665 /* QMK+Add.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A3D69EA1D24EA9A002C5665 /* QMK+Add.m */; };
+		9A3D6A0A1D24EA9A002C5665 /* PYAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A3D69ED1D24EA9A002C5665 /* PYAnnotation.m */; };
+		9A3D6A0B1D24EA9A002C5665 /* PYMapFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A3D69EF1D24EA9A002C5665 /* PYMapFactory.m */; };
+		9A3D6A0C1D24EA9A002C5665 /* PYCoordCover.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A3D69F31D24EA9A002C5665 /* PYCoordCover.m */; };
+		9A3D6A0D1D24EA9A002C5665 /* PYMapSearchResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A3D69F91D24EA9A002C5665 /* PYMapSearchResult.m */; };
+		9A3D6A0E1D24EA9A002C5665 /* PYMapSearchServiceFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A3D69FB1D24EA9A002C5665 /* PYMapSearchServiceFactory.m */; };
 		9A4953B11CD1B26C004CB354 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A4953B01CD1B26C004CB354 /* main.m */; };
 		9A4953B41CD1B26C004CB354 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A4953B31CD1B26C004CB354 /* AppDelegate.m */; };
 		9A4953B71CD1B26C004CB354 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A4953B61CD1B26C004CB354 /* ViewController.m */; };
@@ -28,27 +45,51 @@
 		9A4954281CD1ECD9004CB354 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A4954271CD1ECD9004CB354 /* SystemConfiguration.framework */; };
 		9A49542A1CD1ED06004CB354 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A4954291CD1ED06004CB354 /* CoreTelephony.framework */; };
 		9A49542C1CD1ED2A004CB354 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A49542B1CD1ED2A004CB354 /* libz.tbd */; };
-		9A6C0CF11CD8556B00D3214A /* BMK+Add.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A6C0CC51CD8556B00D3214A /* BMK+Add.m */; };
-		9A6C0CF21CD8556B00D3214A /* PYBaiduImageAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A6C0CC71CD8556B00D3214A /* PYBaiduImageAnnotation.m */; };
-		9A6C0CF31CD8556B00D3214A /* PYMapSearcherWithBaidu.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A6C0CC91CD8556B00D3214A /* PYMapSearcherWithBaidu.m */; };
-		9A6C0CF41CD8556B00D3214A /* PYMapWithBaidu.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9A6C0CCB1CD8556B00D3214A /* PYMapWithBaidu.mm */; };
-		9A6C0CF51CD8556B00D3214A /* MA+Add.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A6C0CCE1CD8556B00D3214A /* MA+Add.m */; };
-		9A6C0CF61CD8556B00D3214A /* PYMAAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A6C0CD01CD8556B00D3214A /* PYMAAnnotationView.m */; };
-		9A6C0CF71CD8556B00D3214A /* PYMapSearcherWithMA.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A6C0CD21CD8556B00D3214A /* PYMapSearcherWithMA.m */; };
-		9A6C0CF81CD8556B00D3214A /* PYMapWithMA.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9A6C0CD41CD8556B00D3214A /* PYMapWithMA.mm */; };
-		9A6C0CF91CD8556B00D3214A /* PYMapSearcherWithTencent.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A6C0CD71CD8556B00D3214A /* PYMapSearcherWithTencent.m */; };
-		9A6C0CFA1CD8556B00D3214A /* PYMapWithTencent.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9A6C0CD91CD8556B00D3214A /* PYMapWithTencent.mm */; };
-		9A6C0CFB1CD8556B00D3214A /* PYTencentAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A6C0CDB1CD8556B00D3214A /* PYTencentAnnotationView.m */; };
-		9A6C0CFC1CD8556B00D3214A /* QMK+Add.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A6C0CDD1CD8556B00D3214A /* QMK+Add.m */; };
-		9A6C0CFD1CD8556B00D3214A /* PYMapFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A6C0CE11CD8556B00D3214A /* PYMapFactory.m */; };
-		9A6C0CFF1CD8556B00D3214A /* PYCoordCover.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A6C0CE81CD8556B00D3214A /* PYCoordCover.m */; };
-		9A6C0D001CD8556B00D3214A /* PYMapSearchResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A6C0CEC1CD8556B00D3214A /* PYMapSearchResult.m */; };
-		9A6C0D061CD872F800D3214A /* PYAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A6C0D051CD872F800D3214A /* PYAnnotation.m */; };
-		9A6C0D0A1CD8749100D3214A /* PYMapSearchServiceFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A6C0D091CD8749100D3214A /* PYMapSearchServiceFactory.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		9A4953AC1CD1B26C004CB354 /* PYMap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PYMap.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9A3D69D11D24EA9A002C5665 /* BMK+Add.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BMK+Add.h"; sourceTree = "<group>"; };
+		9A3D69D21D24EA9A002C5665 /* BMK+Add.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BMK+Add.m"; sourceTree = "<group>"; };
+		9A3D69D31D24EA9A002C5665 /* PYBaiduImageAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYBaiduImageAnnotation.h; sourceTree = "<group>"; };
+		9A3D69D41D24EA9A002C5665 /* PYBaiduImageAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PYBaiduImageAnnotation.m; sourceTree = "<group>"; };
+		9A3D69D51D24EA9A002C5665 /* PYMapSearcherWithBaidu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMapSearcherWithBaidu.h; sourceTree = "<group>"; };
+		9A3D69D61D24EA9A002C5665 /* PYMapSearcherWithBaidu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PYMapSearcherWithBaidu.m; sourceTree = "<group>"; };
+		9A3D69D71D24EA9A002C5665 /* PYMapWithBaidu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMapWithBaidu.h; sourceTree = "<group>"; };
+		9A3D69D81D24EA9A002C5665 /* PYMapWithBaidu.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PYMapWithBaidu.mm; sourceTree = "<group>"; };
+		9A3D69DA1D24EA9A002C5665 /* MA+Add.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MA+Add.h"; sourceTree = "<group>"; };
+		9A3D69DB1D24EA9A002C5665 /* MA+Add.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MA+Add.m"; sourceTree = "<group>"; };
+		9A3D69DC1D24EA9A002C5665 /* PYMAAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMAAnnotationView.h; sourceTree = "<group>"; };
+		9A3D69DD1D24EA9A002C5665 /* PYMAAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PYMAAnnotationView.m; sourceTree = "<group>"; };
+		9A3D69DE1D24EA9A002C5665 /* PYMapSearcherWithMA.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMapSearcherWithMA.h; sourceTree = "<group>"; };
+		9A3D69DF1D24EA9A002C5665 /* PYMapSearcherWithMA.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PYMapSearcherWithMA.m; sourceTree = "<group>"; };
+		9A3D69E01D24EA9A002C5665 /* PYMapWithMA.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMapWithMA.h; sourceTree = "<group>"; };
+		9A3D69E11D24EA9A002C5665 /* PYMapWithMA.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PYMapWithMA.mm; sourceTree = "<group>"; };
+		9A3D69E31D24EA9A002C5665 /* PYMapSearcherWithTencent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMapSearcherWithTencent.h; sourceTree = "<group>"; };
+		9A3D69E41D24EA9A002C5665 /* PYMapSearcherWithTencent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PYMapSearcherWithTencent.m; sourceTree = "<group>"; };
+		9A3D69E51D24EA9A002C5665 /* PYMapWithTencent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMapWithTencent.h; sourceTree = "<group>"; };
+		9A3D69E61D24EA9A002C5665 /* PYMapWithTencent.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PYMapWithTencent.mm; sourceTree = "<group>"; };
+		9A3D69E71D24EA9A002C5665 /* PYTencentAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYTencentAnnotationView.h; sourceTree = "<group>"; };
+		9A3D69E81D24EA9A002C5665 /* PYTencentAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PYTencentAnnotationView.m; sourceTree = "<group>"; };
+		9A3D69E91D24EA9A002C5665 /* QMK+Add.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QMK+Add.h"; sourceTree = "<group>"; };
+		9A3D69EA1D24EA9A002C5665 /* QMK+Add.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "QMK+Add.m"; sourceTree = "<group>"; };
+		9A3D69EC1D24EA9A002C5665 /* PYAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYAnnotation.h; sourceTree = "<group>"; };
+		9A3D69ED1D24EA9A002C5665 /* PYAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PYAnnotation.m; sourceTree = "<group>"; };
+		9A3D69EE1D24EA9A002C5665 /* PYMapFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMapFactory.h; sourceTree = "<group>"; };
+		9A3D69EF1D24EA9A002C5665 /* PYMapFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PYMapFactory.m; sourceTree = "<group>"; };
+		9A3D69F01D24EA9A002C5665 /* PYMapKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMapKit.h; sourceTree = "<group>"; };
+		9A3D69F11D24EA9A002C5665 /* PYMapKit_Delegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMapKit_Delegate.h; sourceTree = "<group>"; };
+		9A3D69F21D24EA9A002C5665 /* PYCoordCover.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYCoordCover.h; sourceTree = "<group>"; };
+		9A3D69F31D24EA9A002C5665 /* PYCoordCover.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PYCoordCover.m; sourceTree = "<group>"; };
+		9A3D69F41D24EA9A002C5665 /* PYMapApiKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMapApiKey.h; sourceTree = "<group>"; };
+		9A3D69F51D24EA9A002C5665 /* PYMapGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMapGeometry.h; sourceTree = "<group>"; };
+		9A3D69F61D24EA9A002C5665 /* PYMapUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMapUtil.h; sourceTree = "<group>"; };
+		9A3D69F81D24EA9A002C5665 /* PYMapSearchResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMapSearchResult.h; sourceTree = "<group>"; };
+		9A3D69F91D24EA9A002C5665 /* PYMapSearchResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PYMapSearchResult.m; sourceTree = "<group>"; };
+		9A3D69FA1D24EA9A002C5665 /* PYMapSearchServiceFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMapSearchServiceFactory.h; sourceTree = "<group>"; };
+		9A3D69FB1D24EA9A002C5665 /* PYMapSearchServiceFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PYMapSearchServiceFactory.m; sourceTree = "<group>"; };
+		9A3D69FC1D24EA9A002C5665 /* PYMapSearchServiceKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMapSearchServiceKit.h; sourceTree = "<group>"; };
+		9A3D69FD1D24EA9A002C5665 /* PYMapSSK_Delegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMapSSK_Delegate.h; sourceTree = "<group>"; };
+		9A4953AC1CD1B26C004CB354 /* Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A4953B01CD1B26C004CB354 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = main.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		9A4953B21CD1B26C004CB354 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		9A4953B31CD1B26C004CB354 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -74,47 +115,6 @@
 		9A4954271CD1ECD9004CB354 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		9A4954291CD1ED06004CB354 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		9A49542B1CD1ED2A004CB354 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
-		9A6C0CC41CD8556B00D3214A /* BMK+Add.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BMK+Add.h"; sourceTree = "<group>"; };
-		9A6C0CC51CD8556B00D3214A /* BMK+Add.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BMK+Add.m"; sourceTree = "<group>"; };
-		9A6C0CC61CD8556B00D3214A /* PYBaiduImageAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYBaiduImageAnnotation.h; sourceTree = "<group>"; };
-		9A6C0CC71CD8556B00D3214A /* PYBaiduImageAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PYBaiduImageAnnotation.m; sourceTree = "<group>"; };
-		9A6C0CC81CD8556B00D3214A /* PYMapSearcherWithBaidu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMapSearcherWithBaidu.h; sourceTree = "<group>"; };
-		9A6C0CC91CD8556B00D3214A /* PYMapSearcherWithBaidu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PYMapSearcherWithBaidu.m; sourceTree = "<group>"; };
-		9A6C0CCA1CD8556B00D3214A /* PYMapWithBaidu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMapWithBaidu.h; sourceTree = "<group>"; };
-		9A6C0CCB1CD8556B00D3214A /* PYMapWithBaidu.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PYMapWithBaidu.mm; sourceTree = "<group>"; };
-		9A6C0CCD1CD8556B00D3214A /* MA+Add.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MA+Add.h"; sourceTree = "<group>"; };
-		9A6C0CCE1CD8556B00D3214A /* MA+Add.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MA+Add.m"; sourceTree = "<group>"; };
-		9A6C0CCF1CD8556B00D3214A /* PYMAAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMAAnnotationView.h; sourceTree = "<group>"; };
-		9A6C0CD01CD8556B00D3214A /* PYMAAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PYMAAnnotationView.m; sourceTree = "<group>"; };
-		9A6C0CD11CD8556B00D3214A /* PYMapSearcherWithMA.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMapSearcherWithMA.h; sourceTree = "<group>"; };
-		9A6C0CD21CD8556B00D3214A /* PYMapSearcherWithMA.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PYMapSearcherWithMA.m; sourceTree = "<group>"; };
-		9A6C0CD31CD8556B00D3214A /* PYMapWithMA.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMapWithMA.h; sourceTree = "<group>"; };
-		9A6C0CD41CD8556B00D3214A /* PYMapWithMA.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PYMapWithMA.mm; sourceTree = "<group>"; };
-		9A6C0CD61CD8556B00D3214A /* PYMapSearcherWithTencent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMapSearcherWithTencent.h; sourceTree = "<group>"; };
-		9A6C0CD71CD8556B00D3214A /* PYMapSearcherWithTencent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PYMapSearcherWithTencent.m; sourceTree = "<group>"; };
-		9A6C0CD81CD8556B00D3214A /* PYMapWithTencent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMapWithTencent.h; sourceTree = "<group>"; };
-		9A6C0CD91CD8556B00D3214A /* PYMapWithTencent.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PYMapWithTencent.mm; sourceTree = "<group>"; };
-		9A6C0CDA1CD8556B00D3214A /* PYTencentAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYTencentAnnotationView.h; sourceTree = "<group>"; };
-		9A6C0CDB1CD8556B00D3214A /* PYTencentAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PYTencentAnnotationView.m; sourceTree = "<group>"; };
-		9A6C0CDC1CD8556B00D3214A /* QMK+Add.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QMK+Add.h"; sourceTree = "<group>"; };
-		9A6C0CDD1CD8556B00D3214A /* QMK+Add.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "QMK+Add.m"; sourceTree = "<group>"; };
-		9A6C0CE01CD8556B00D3214A /* PYMapFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMapFactory.h; sourceTree = "<group>"; };
-		9A6C0CE11CD8556B00D3214A /* PYMapFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PYMapFactory.m; sourceTree = "<group>"; };
-		9A6C0CE21CD8556B00D3214A /* PYMapKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMapKit.h; sourceTree = "<group>"; };
-		9A6C0CE41CD8556B00D3214A /* PYMapKit_Delegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMapKit_Delegate.h; sourceTree = "<group>"; };
-		9A6C0CE71CD8556B00D3214A /* PYCoordCover.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYCoordCover.h; sourceTree = "<group>"; };
-		9A6C0CE81CD8556B00D3214A /* PYCoordCover.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PYCoordCover.m; sourceTree = "<group>"; };
-		9A6C0CE91CD8556B00D3214A /* PYMapGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMapGeometry.h; sourceTree = "<group>"; };
-		9A6C0CEB1CD8556B00D3214A /* PYMapSearchResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMapSearchResult.h; sourceTree = "<group>"; };
-		9A6C0CEC1CD8556B00D3214A /* PYMapSearchResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PYMapSearchResult.m; sourceTree = "<group>"; };
-		9A6C0CED1CD8556B00D3214A /* PYMapSearchServiceKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMapSearchServiceKit.h; sourceTree = "<group>"; };
-		9A6C0CF01CD8556B00D3214A /* PYMapSSK_Delegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMapSSK_Delegate.h; sourceTree = "<group>"; };
-		9A6C0D031CD872BC00D3214A /* PYMapApiKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMapApiKey.h; sourceTree = "<group>"; };
-		9A6C0D041CD872F800D3214A /* PYAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYAnnotation.h; sourceTree = "<group>"; };
-		9A6C0D051CD872F800D3214A /* PYAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PYAnnotation.m; sourceTree = "<group>"; };
-		9A6C0D071CD8741A00D3214A /* PYMapUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PYMapUtil.h; sourceTree = "<group>"; };
-		9A6C0D081CD8749100D3214A /* PYMapSearchServiceFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYMapSearchServiceFactory.h; sourceTree = "<group>"; };
-		9A6C0D091CD8749100D3214A /* PYMapSearchServiceFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PYMapSearchServiceFactory.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,10 +140,99 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9A3D69CF1D24EA9A002C5665 /* PYMapKit */ = {
+			isa = PBXGroup;
+			children = (
+				9A3D69D01D24EA9A002C5665 /* _Baidu */,
+				9A3D69D91D24EA9A002C5665 /* _MA */,
+				9A3D69E21D24EA9A002C5665 /* _Tencent */,
+				9A3D69F21D24EA9A002C5665 /* PYCoordCover.h */,
+				9A3D69F31D24EA9A002C5665 /* PYCoordCover.m */,
+				9A3D69F41D24EA9A002C5665 /* PYMapApiKey.h */,
+				9A3D69F51D24EA9A002C5665 /* PYMapGeometry.h */,
+				9A3D69F61D24EA9A002C5665 /* PYMapUtil.h */,
+				9A3D69EB1D24EA9A002C5665 /* MapAPI */,
+				9A3D69F71D24EA9A002C5665 /* SearchAPI */,
+			);
+			name = PYMapKit;
+			path = ../../PYMapKit;
+			sourceTree = "<group>";
+		};
+		9A3D69D01D24EA9A002C5665 /* _Baidu */ = {
+			isa = PBXGroup;
+			children = (
+				9A3D69D11D24EA9A002C5665 /* BMK+Add.h */,
+				9A3D69D21D24EA9A002C5665 /* BMK+Add.m */,
+				9A3D69D31D24EA9A002C5665 /* PYBaiduImageAnnotation.h */,
+				9A3D69D41D24EA9A002C5665 /* PYBaiduImageAnnotation.m */,
+				9A3D69D51D24EA9A002C5665 /* PYMapSearcherWithBaidu.h */,
+				9A3D69D61D24EA9A002C5665 /* PYMapSearcherWithBaidu.m */,
+				9A3D69D71D24EA9A002C5665 /* PYMapWithBaidu.h */,
+				9A3D69D81D24EA9A002C5665 /* PYMapWithBaidu.mm */,
+			);
+			path = _Baidu;
+			sourceTree = "<group>";
+		};
+		9A3D69D91D24EA9A002C5665 /* _MA */ = {
+			isa = PBXGroup;
+			children = (
+				9A3D69DA1D24EA9A002C5665 /* MA+Add.h */,
+				9A3D69DB1D24EA9A002C5665 /* MA+Add.m */,
+				9A3D69DC1D24EA9A002C5665 /* PYMAAnnotationView.h */,
+				9A3D69DD1D24EA9A002C5665 /* PYMAAnnotationView.m */,
+				9A3D69DE1D24EA9A002C5665 /* PYMapSearcherWithMA.h */,
+				9A3D69DF1D24EA9A002C5665 /* PYMapSearcherWithMA.m */,
+				9A3D69E01D24EA9A002C5665 /* PYMapWithMA.h */,
+				9A3D69E11D24EA9A002C5665 /* PYMapWithMA.mm */,
+			);
+			path = _MA;
+			sourceTree = "<group>";
+		};
+		9A3D69E21D24EA9A002C5665 /* _Tencent */ = {
+			isa = PBXGroup;
+			children = (
+				9A3D69E31D24EA9A002C5665 /* PYMapSearcherWithTencent.h */,
+				9A3D69E41D24EA9A002C5665 /* PYMapSearcherWithTencent.m */,
+				9A3D69E51D24EA9A002C5665 /* PYMapWithTencent.h */,
+				9A3D69E61D24EA9A002C5665 /* PYMapWithTencent.mm */,
+				9A3D69E71D24EA9A002C5665 /* PYTencentAnnotationView.h */,
+				9A3D69E81D24EA9A002C5665 /* PYTencentAnnotationView.m */,
+				9A3D69E91D24EA9A002C5665 /* QMK+Add.h */,
+				9A3D69EA1D24EA9A002C5665 /* QMK+Add.m */,
+			);
+			path = _Tencent;
+			sourceTree = "<group>";
+		};
+		9A3D69EB1D24EA9A002C5665 /* MapAPI */ = {
+			isa = PBXGroup;
+			children = (
+				9A3D69EC1D24EA9A002C5665 /* PYAnnotation.h */,
+				9A3D69ED1D24EA9A002C5665 /* PYAnnotation.m */,
+				9A3D69EE1D24EA9A002C5665 /* PYMapFactory.h */,
+				9A3D69EF1D24EA9A002C5665 /* PYMapFactory.m */,
+				9A3D69F01D24EA9A002C5665 /* PYMapKit.h */,
+				9A3D69F11D24EA9A002C5665 /* PYMapKit_Delegate.h */,
+			);
+			path = MapAPI;
+			sourceTree = "<group>";
+		};
+		9A3D69F71D24EA9A002C5665 /* SearchAPI */ = {
+			isa = PBXGroup;
+			children = (
+				9A3D69F81D24EA9A002C5665 /* PYMapSearchResult.h */,
+				9A3D69F91D24EA9A002C5665 /* PYMapSearchResult.m */,
+				9A3D69FA1D24EA9A002C5665 /* PYMapSearchServiceFactory.h */,
+				9A3D69FB1D24EA9A002C5665 /* PYMapSearchServiceFactory.m */,
+				9A3D69FC1D24EA9A002C5665 /* PYMapSearchServiceKit.h */,
+				9A3D69FD1D24EA9A002C5665 /* PYMapSSK_Delegate.h */,
+			);
+			path = SearchAPI;
+			sourceTree = "<group>";
+		};
 		9A4953A31CD1B26C004CB354 = {
 			isa = PBXGroup;
 			children = (
-				9A4953AE1CD1B26C004CB354 /* PYMap */,
+				9A4953AE1CD1B26C004CB354 /* Demo */,
 				9A4953AD1CD1B26C004CB354 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -151,15 +240,15 @@
 		9A4953AD1CD1B26C004CB354 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				9A4953AC1CD1B26C004CB354 /* PYMap.app */,
+				9A4953AC1CD1B26C004CB354 /* Demo.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		9A4953AE1CD1B26C004CB354 /* PYMap */ = {
+		9A4953AE1CD1B26C004CB354 /* Demo */ = {
 			isa = PBXGroup;
 			children = (
-				9A6C0CC21CD8556B00D3214A /* PYMapKit */,
+				9A3D69CF1D24EA9A002C5665 /* PYMapKit */,
 				9A4954181CD1EB5C004CB354 /* framework */,
 				9A4954061CD1E213004CB354 /* MapFrameWork */,
 				9A49540C1CD1E213004CB354 /* MapResource */,
@@ -173,7 +262,7 @@
 				9A4953C01CD1B26C004CB354 /* Info.plist */,
 				9A4953AF1CD1B26C004CB354 /* Supporting Files */,
 			);
-			path = PYMap;
+			path = Demo;
 			sourceTree = "<group>";
 		};
 		9A4953AF1CD1B26C004CB354 /* Supporting Files */ = {
@@ -221,100 +310,12 @@
 			name = framework;
 			sourceTree = "<group>";
 		};
-		9A6C0CC21CD8556B00D3214A /* PYMapKit */ = {
-			isa = PBXGroup;
-			children = (
-				9A6C0CC31CD8556B00D3214A /* _Baidu */,
-				9A6C0CCC1CD8556B00D3214A /* _MA */,
-				9A6C0CD51CD8556B00D3214A /* _Tencent */,
-				9A6C0CDE1CD8556B00D3214A /* MapAPI */,
-				9A6C0CEA1CD8556B00D3214A /* SearchAPI */,
-				9A6C0CE71CD8556B00D3214A /* PYCoordCover.h */,
-				9A6C0CE81CD8556B00D3214A /* PYCoordCover.m */,
-				9A6C0CE91CD8556B00D3214A /* PYMapGeometry.h */,
-				9A6C0D031CD872BC00D3214A /* PYMapApiKey.h */,
-				9A6C0D071CD8741A00D3214A /* PYMapUtil.h */,
-			);
-			path = PYMapKit;
-			sourceTree = "<group>";
-		};
-		9A6C0CC31CD8556B00D3214A /* _Baidu */ = {
-			isa = PBXGroup;
-			children = (
-				9A6C0CC41CD8556B00D3214A /* BMK+Add.h */,
-				9A6C0CC51CD8556B00D3214A /* BMK+Add.m */,
-				9A6C0CC61CD8556B00D3214A /* PYBaiduImageAnnotation.h */,
-				9A6C0CC71CD8556B00D3214A /* PYBaiduImageAnnotation.m */,
-				9A6C0CC81CD8556B00D3214A /* PYMapSearcherWithBaidu.h */,
-				9A6C0CC91CD8556B00D3214A /* PYMapSearcherWithBaidu.m */,
-				9A6C0CCA1CD8556B00D3214A /* PYMapWithBaidu.h */,
-				9A6C0CCB1CD8556B00D3214A /* PYMapWithBaidu.mm */,
-			);
-			path = _Baidu;
-			sourceTree = "<group>";
-		};
-		9A6C0CCC1CD8556B00D3214A /* _MA */ = {
-			isa = PBXGroup;
-			children = (
-				9A6C0CCD1CD8556B00D3214A /* MA+Add.h */,
-				9A6C0CCE1CD8556B00D3214A /* MA+Add.m */,
-				9A6C0CCF1CD8556B00D3214A /* PYMAAnnotationView.h */,
-				9A6C0CD01CD8556B00D3214A /* PYMAAnnotationView.m */,
-				9A6C0CD11CD8556B00D3214A /* PYMapSearcherWithMA.h */,
-				9A6C0CD21CD8556B00D3214A /* PYMapSearcherWithMA.m */,
-				9A6C0CD31CD8556B00D3214A /* PYMapWithMA.h */,
-				9A6C0CD41CD8556B00D3214A /* PYMapWithMA.mm */,
-			);
-			path = _MA;
-			sourceTree = "<group>";
-		};
-		9A6C0CD51CD8556B00D3214A /* _Tencent */ = {
-			isa = PBXGroup;
-			children = (
-				9A6C0CD61CD8556B00D3214A /* PYMapSearcherWithTencent.h */,
-				9A6C0CD71CD8556B00D3214A /* PYMapSearcherWithTencent.m */,
-				9A6C0CD81CD8556B00D3214A /* PYMapWithTencent.h */,
-				9A6C0CD91CD8556B00D3214A /* PYMapWithTencent.mm */,
-				9A6C0CDA1CD8556B00D3214A /* PYTencentAnnotationView.h */,
-				9A6C0CDB1CD8556B00D3214A /* PYTencentAnnotationView.m */,
-				9A6C0CDC1CD8556B00D3214A /* QMK+Add.h */,
-				9A6C0CDD1CD8556B00D3214A /* QMK+Add.m */,
-			);
-			path = _Tencent;
-			sourceTree = "<group>";
-		};
-		9A6C0CDE1CD8556B00D3214A /* MapAPI */ = {
-			isa = PBXGroup;
-			children = (
-				9A6C0D041CD872F800D3214A /* PYAnnotation.h */,
-				9A6C0D051CD872F800D3214A /* PYAnnotation.m */,
-				9A6C0CE01CD8556B00D3214A /* PYMapFactory.h */,
-				9A6C0CE11CD8556B00D3214A /* PYMapFactory.m */,
-				9A6C0CE21CD8556B00D3214A /* PYMapKit.h */,
-				9A6C0CE41CD8556B00D3214A /* PYMapKit_Delegate.h */,
-			);
-			path = MapAPI;
-			sourceTree = "<group>";
-		};
-		9A6C0CEA1CD8556B00D3214A /* SearchAPI */ = {
-			isa = PBXGroup;
-			children = (
-				9A6C0CEB1CD8556B00D3214A /* PYMapSearchResult.h */,
-				9A6C0CEC1CD8556B00D3214A /* PYMapSearchResult.m */,
-				9A6C0CED1CD8556B00D3214A /* PYMapSearchServiceKit.h */,
-				9A6C0CF01CD8556B00D3214A /* PYMapSSK_Delegate.h */,
-				9A6C0D081CD8749100D3214A /* PYMapSearchServiceFactory.h */,
-				9A6C0D091CD8749100D3214A /* PYMapSearchServiceFactory.m */,
-			);
-			path = SearchAPI;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		9A4953AB1CD1B26C004CB354 /* PYMap */ = {
+		9A4953AB1CD1B26C004CB354 /* Demo */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9A4953C31CD1B26C004CB354 /* Build configuration list for PBXNativeTarget "PYMap" */;
+			buildConfigurationList = 9A4953C31CD1B26C004CB354 /* Build configuration list for PBXNativeTarget "Demo" */;
 			buildPhases = (
 				9A4953A81CD1B26C004CB354 /* Sources */,
 				9A4953A91CD1B26C004CB354 /* Frameworks */,
@@ -324,9 +325,9 @@
 			);
 			dependencies = (
 			);
-			name = PYMap;
-			productName = PYMap;
-			productReference = 9A4953AC1CD1B26C004CB354 /* PYMap.app */;
+			name = Demo;
+			productName = Demo;
+			productReference = 9A4953AC1CD1B26C004CB354 /* Demo.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -344,7 +345,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 9A4953A71CD1B26C004CB354 /* Build configuration list for PBXProject "PYMap" */;
+			buildConfigurationList = 9A4953A71CD1B26C004CB354 /* Build configuration list for PBXProject "Demo" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -357,7 +358,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				9A4953AB1CD1B26C004CB354 /* PYMap */,
+				9A4953AB1CD1B26C004CB354 /* Demo */,
 			);
 		};
 /* End PBXProject section */
@@ -383,26 +384,26 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9A6C0D061CD872F800D3214A /* PYAnnotation.m in Sources */,
+				9A3D6A0E1D24EA9A002C5665 /* PYMapSearchServiceFactory.m in Sources */,
 				9A4953B71CD1B26C004CB354 /* ViewController.m in Sources */,
+				9A3D6A0B1D24EA9A002C5665 /* PYMapFactory.m in Sources */,
 				9A4953B41CD1B26C004CB354 /* AppDelegate.m in Sources */,
-				9A6C0CF71CD8556B00D3214A /* PYMapSearcherWithMA.m in Sources */,
-				9A6C0CF21CD8556B00D3214A /* PYBaiduImageAnnotation.m in Sources */,
-				9A6C0CF41CD8556B00D3214A /* PYMapWithBaidu.mm in Sources */,
-				9A6C0CFC1CD8556B00D3214A /* QMK+Add.m in Sources */,
-				9A6C0CFF1CD8556B00D3214A /* PYCoordCover.m in Sources */,
-				9A6C0CFA1CD8556B00D3214A /* PYMapWithTencent.mm in Sources */,
-				9A6C0CF11CD8556B00D3214A /* BMK+Add.m in Sources */,
-				9A6C0CFD1CD8556B00D3214A /* PYMapFactory.m in Sources */,
-				9A6C0D001CD8556B00D3214A /* PYMapSearchResult.m in Sources */,
-				9A6C0CF91CD8556B00D3214A /* PYMapSearcherWithTencent.m in Sources */,
-				9A6C0D0A1CD8749100D3214A /* PYMapSearchServiceFactory.m in Sources */,
-				9A6C0CF51CD8556B00D3214A /* MA+Add.m in Sources */,
-				9A6C0CFB1CD8556B00D3214A /* PYTencentAnnotationView.m in Sources */,
-				9A6C0CF31CD8556B00D3214A /* PYMapSearcherWithBaidu.m in Sources */,
+				9A3D6A041D24EA9A002C5665 /* PYMapSearcherWithMA.m in Sources */,
+				9A3D69FF1D24EA9A002C5665 /* PYBaiduImageAnnotation.m in Sources */,
+				9A3D6A011D24EA9A002C5665 /* PYMapWithBaidu.mm in Sources */,
+				9A3D6A0C1D24EA9A002C5665 /* PYCoordCover.m in Sources */,
+				9A3D6A091D24EA9A002C5665 /* QMK+Add.m in Sources */,
+				9A3D6A071D24EA9A002C5665 /* PYMapWithTencent.mm in Sources */,
+				9A3D6A031D24EA9A002C5665 /* PYMAAnnotationView.m in Sources */,
+				9A3D6A0D1D24EA9A002C5665 /* PYMapSearchResult.m in Sources */,
+				9A3D6A061D24EA9A002C5665 /* PYMapSearcherWithTencent.m in Sources */,
+				9A3D6A081D24EA9A002C5665 /* PYTencentAnnotationView.m in Sources */,
+				9A3D69FE1D24EA9A002C5665 /* BMK+Add.m in Sources */,
+				9A3D6A021D24EA9A002C5665 /* MA+Add.m in Sources */,
+				9A3D6A001D24EA9A002C5665 /* PYMapSearcherWithBaidu.m in Sources */,
+				9A3D6A0A1D24EA9A002C5665 /* PYAnnotation.m in Sources */,
 				9A4953B11CD1B26C004CB354 /* main.m in Sources */,
-				9A6C0CF61CD8556B00D3214A /* PYMAAnnotationView.m in Sources */,
-				9A6C0CF81CD8556B00D3214A /* PYMapWithMA.mm in Sources */,
+				9A3D6A051D24EA9A002C5665 /* PYMapWithMA.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -514,13 +515,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/PYMap/MapFrameWork",
+					"$(PROJECT_DIR)/Demo/MapFrameWork",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = prefix.pch;
-				INFOPLIST_FILE = PYMap/Info.plist;
+				INFOPLIST_FILE = Demo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = yr.PYMap;
+				PRODUCT_BUNDLE_IDENTIFIER = yr.Demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -531,13 +532,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/PYMap/MapFrameWork",
+					"$(PROJECT_DIR)/Demo/MapFrameWork",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = prefix.pch;
-				INFOPLIST_FILE = PYMap/Info.plist;
+				INFOPLIST_FILE = Demo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = yr.PYMap;
+				PRODUCT_BUNDLE_IDENTIFIER = yr.Demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -545,7 +546,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		9A4953A71CD1B26C004CB354 /* Build configuration list for PBXProject "PYMap" */ = {
+		9A4953A71CD1B26C004CB354 /* Build configuration list for PBXProject "Demo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9A4953C11CD1B26C004CB354 /* Debug */,
@@ -554,7 +555,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9A4953C31CD1B26C004CB354 /* Build configuration list for PBXNativeTarget "PYMap" */ = {
+		9A4953C31CD1B26C004CB354 /* Build configuration list for PBXNativeTarget "Demo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9A4953C41CD1B26C004CB354 /* Debug */,
