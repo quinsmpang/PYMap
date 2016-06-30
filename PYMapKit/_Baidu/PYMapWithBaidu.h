@@ -1,16 +1,16 @@
 //
-//  PYMapWithBaidu.h
-//
+//  RRMapWithTencent.h
+//  QMapKitSample
 //
 //  Created by YR on 15/8/19.
-//  Copyright (c) 2015年 YR. All rights reserved.
+//  Copyright (c) 2015年 Tencent. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
-#import "PYMapKit.h"
-#import <BaiduMapAPI/BMapKit.h>
+#import "RRMapKit.h"
+#import <BaiduMapAPI_Map/BMKMapView.h>
 
-@interface PYMapWithBaidu : NSObject<PYMapKitProtocal>
+@interface RRMapWithBaidu : NSObject<RRMapKitProtocal>
 
 @end
 

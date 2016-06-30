@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <BaiduMapAPI/BMapKit.h>
+#import <BaiduMapAPI_Map/BMKShape.h>
 
 @interface BMKShape (ADD_UID)
 
