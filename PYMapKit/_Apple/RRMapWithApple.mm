@@ -1,12 +1,12 @@
 //
-//  RRMapWithMA.m
+//  PYMapWithMA.m
 //
 //  Created by YR on 15/8/19.
 //  Copyright (c) 2015年 MA. All rights reserved.
 //
 #ifdef _Map_Apple
 
-#import "RRMapWithApple.h"
+#import "PYMapWithApple.h"
 #import "RRAppleImageAnnotation.h"
 #import "Apple+Add.h"
 #import "MKMapView+ZoomLevel.h"
@@ -33,11 +33,11 @@ typedef NS_ENUM(NSUInteger, MKAnonotationType) {
 @end
 
 
-@interface RRMapWithApple () <MKMapViewDelegate>
+@interface PYMapWithApple () <MKMapViewDelegate>
 @end
 
 
-@implementation RRMapWithApple {
+@implementation PYMapWithApple {
     MKMapView            *_mapView;
     NSMutableDictionary *_overlayInfo;
     NSMutableDictionary *_annotationInfo;

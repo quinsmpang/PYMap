@@ -1,61 +1,64 @@
 //
-//  RRMapWithBaidu.m
+//  PYMapWithBaidu.m
 //
 //  Created by YR on 15/8/19.
-//  Copyright (c) 2015年 Tencent. All rights reserved.
+//  Copyright (c) 2015年 PY. All rights reserved.
 //
 #ifdef _Map_Baidu
 
-#import "RRMapWithBaidu.h"
-#import "RRBaiduImageAnnotation.h"
-#import "RRCoordCover.h"
+#import "PYMapWithBaidu.h"
+#import "PYBaiduImageAnnotation.h"
+#import "PYCoordCover.h"
 #import "BMK+Add.h"
-#import <BaiduMapAPI_Map/BMKPointAnnotation.h>
-#import <BaiduMapAPI_Map/BMKPolygon.h>
-#import <BaiduMapAPI_Map/BMKPolyline.h>
-#import <BaiduMapAPI_Map/BMKPolygonView.h>
-#import <BaiduMapAPI_Map/BMKPolylineView.h>
 #import <BaiduMapAPI_Utils/BMKGeometry.h>
 
 
-typedef NS_ENUM (NSUInteger, BMKAnonotationType) {
-    BMKAnonotationType_Normal,    //只有图片
-    BMKAnonotationType_Callout, //带callout的气泡
-};
-
-
-@interface RRPointAnnotationSave : NSObject
+@interface PYAnnotationInfo : NSObject
 
 @property(nonatomic, strong) BMKPointAnnotation *annotation;
 @property(nonatomic, strong) NSString           *uid;
 @property(nonatomic, strong) NSString           *imageName;
-@property(nonatomic, assign) BMKAnonotationType type;
+@property(nonatomic, strong) NSString           *reuseId;
 
 @end
 
 
-@interface RRMapWithBaidu () <BMKMapViewDelegate>
+typedef NS_ENUM (NSUInteger, ShapeType) {
+    ShapeType_Polygon,
+    ShapeType_Line,
+};
+
+
+@interface PYShapeInfo : NSObject
+
+@property(nonatomic, strong) UIColor   *strokeColor;
+@property(nonatomic, strong) UIColor   *fillColor;
+@property(nonatomic, assign) CGFloat   lineWidth;
+@property(nonatomic, assign) ShapeType shapeType;
+@property(nonatomic, strong) BMKShape  *shape;
+
 @end
 
 
-@implementation RRMapWithBaidu {
+
+@interface PYMapWithBaidu () <BMKMapViewDelegate>
+@end
+
+
+@implementation PYMapWithBaidu {
     BMKMapView          *_mapView;
-    NSMutableDictionary *_overlayInfo;
-    NSMutableDictionary *_annotationInfo;
+    NSMutableDictionary<NSString*, PYShapeInfo*>* _shapeCache;
+    NSMutableDictionary<NSString*, PYAnnotationInfo*>*_annotationCache;
 }
 
-@synthesize annotationSelectAtUid        = _annotationSelectAtUid;
-@synthesize annotationDeSelectAtUid      = _annotationDeSelectAtUid;
-@synthesize annotationCalloutViewWithUid = _annotationCalloutViewWithUid;
-@synthesize annotationImageWithUid       = _annotationImageWithUid;
-@synthesize mapDelegate                  = _mapDelegate;
+@synthesize mapDelegate = _mapDelegate;
 
 - (instancetype)init
 {
     if (self = [super init]) {
-        _mapView        = [[BMKMapView alloc] init];
-        _overlayInfo    = [[NSMutableDictionary alloc] init];
-        _annotationInfo = [[NSMutableDictionary alloc] init];
+        _mapView         = [[BMKMapView alloc] init];
+        _shapeCache      = [[NSMutableDictionary alloc] init];
+        _annotationCache = [[NSMutableDictionary alloc] init];
 
         _mapView.delegate = self;
     }
@@ -82,38 +85,25 @@ typedef NS_ENUM (NSUInteger, BMKAnonotationType) {
  *
  *  @param annotation 要添加的标注
  */
-- (void)addAnnotation:(id <RRAnnotation>)annotation imageName:(NSString *)imgStr uid:(NSString *)uid
-{
-    [self _addAnnotation:annotation imageName:imgStr uid:uid withType:BMKAnonotationType_Normal];
-}
-
-
-- (void)addCalloutAnnotation:(id<RRAnnotation>)annotation
-                   imageName:(NSString *)imgStr
-                         uid:(NSString *)uid
-{
-    [self _addAnnotation:annotation imageName:imgStr uid:uid withType:BMKAnonotationType_Callout];
-}
-
-
-- (void)_addAnnotation:(id<RRAnnotation>)annotation
-             imageName:(NSString *)imgStr
-                   uid:(NSString *)uid
-              withType:(BMKAnonotationType)type
+- (void)addAnnotation:(id <PYAnnotation>)annotation
+            imageName:(NSString *)imgStr
+                  uid:(NSString *)uid
+              reuseId:(NSString *)reuseId
 {
     if (uid == nil) return;
 
     BMKPointAnnotation *pointAnnotation = [[BMKPointAnnotation alloc] init];
     pointAnnotation._uid_      = uid;
-    pointAnnotation.coordinate = [RRCoordCover convertGCJ02ToBD:
-                                  [annotation coordinate]];;
+    pointAnnotation.title      = @" ";
+    pointAnnotation.coordinate = [PYCoordCover convertGCJ02ToBD:
+                                  [annotation coordinate]];
 
-    RRPointAnnotationSave *save = [RRPointAnnotationSave new];
+    PYAnnotationInfo *save = [PYAnnotationInfo new];
     save.annotation = pointAnnotation;
     save.imageName  = imgStr;
-    save.type       = type;
+    save.reuseId    = reuseId;
 
-    [_annotationInfo setObject:save forKey:uid];
+    [_annotationCache setObject:save forKey:uid];
 
     [_mapView addAnnotation:pointAnnotation];
 }
@@ -130,10 +120,10 @@ typedef NS_ENUM (NSUInteger, BMKAnonotationType) {
     for (NSString *annotationUID in annotationUIDs) {
         if (![annotationUID isKindOfClass:[NSString class]]) return;
 
-        RRPointAnnotationSave *pointAnnotation = [_annotationInfo objectForKey:annotationUID];
+        PYAnnotationInfo *pointAnnotation = [_annotationCache objectForKey:annotationUID];
         if (pointAnnotation) {
             [pointAnnotations addObject:pointAnnotation.annotation];
-            [_annotationInfo removeObjectForKey:annotationUID];
+            [_annotationCache removeObjectForKey:annotationUID];
         }
     }
 
@@ -148,11 +138,21 @@ typedef NS_ENUM (NSUInteger, BMKAnonotationType) {
  */
 - (void)removeAnnotation:(NSString *)annotationUID;
 {
-    RRPointAnnotationSave *pointAnnotation = [_annotationInfo objectForKey:annotationUID];
+    PYAnnotationInfo *pointAnnotation = [_annotationCache objectForKey:annotationUID];
     if (pointAnnotation) {
         [_mapView removeAnnotation:pointAnnotation.annotation];
-        [_annotationInfo removeObjectForKey:annotationUID];
+        [_annotationCache removeObjectForKey:annotationUID];
     }
+}
+
+
+/*!
+ *  @brief  移除所有标注
+ */
+- (void)removeAllAnnotations
+{
+    [_mapView removeAnnotations:_mapView.annotations];
+    [_annotationCache removeAllObjects];
 }
 
 
@@ -162,9 +162,9 @@ typedef NS_ENUM (NSUInteger, BMKAnonotationType) {
  *  @param region   要设定的地图范围，用经纬度的方式表示
  *  @param animated 是否采用动画
  */
-- (void)setRegion:(RRCoordinateRegion)region animated:(BOOL)animated
+- (void)setRegion:(PYCoordinateRegion)region animated:(BOOL)animated
 {
-    CLLocationCoordinate2D center = [RRCoordCover convertGCJ02ToBD:region.center];
+    CLLocationCoordinate2D center = [PYCoordCover convertGCJ02ToBD:region.center];
 
     BMKCoordinateRegion qRegin = BMKCoordinateRegionMake(center,
                                                          BMKCoordinateSpanMake(region.span.latitudeDelta, region.span.longitudeDelta));
@@ -173,22 +173,22 @@ typedef NS_ENUM (NSUInteger, BMKAnonotationType) {
 }
 
 
-- (RRCoordinateRegion)regionThatFits:(RRCoordinateRegion)region
+- (PYCoordinateRegion)regionThatFits:(PYCoordinateRegion)region
 {
-    CLLocationCoordinate2D center = [RRCoordCover convertGCJ02ToBD:region.center];
+    CLLocationCoordinate2D center = [PYCoordCover convertGCJ02ToBD:region.center];
 
     BMKCoordinateRegion qRegin = BMKCoordinateRegionMake(center,
                                                          BMKCoordinateSpanMake(region.span.latitudeDelta, region.span.longitudeDelta));
     qRegin = [_mapView regionThatFits:qRegin];
 
-    return RRCoordinateRegionMake([RRCoordCover convertBDToGCJ02:qRegin.center],
-                                  RRCoordinateSpanMake(qRegin.span.latitudeDelta, qRegin.span.longitudeDelta));
+    return PYCoordinateRegionMake([PYCoordCover convertBDToGCJ02:qRegin.center],
+                                  PYCoordinateSpanMake(qRegin.span.latitudeDelta, qRegin.span.longitudeDelta));
 }
 
 
 - (void)setCenterCoordinate:(CLLocationCoordinate2D)coordinate animated:(BOOL)animated
 {
-    CLLocationCoordinate2D center = [RRCoordCover convertGCJ02ToBD:coordinate];
+    CLLocationCoordinate2D center = [PYCoordCover convertGCJ02ToBD:coordinate];
 
     [_mapView setCenterCoordinate:center animated:animated];
 }
@@ -208,7 +208,7 @@ typedef NS_ENUM (NSUInteger, BMKAnonotationType) {
         CLLocationCoordinate2D coor;
         coor.longitude = [lon floatValue];
         coor.latitude  = [lat floatValue];
-        coor           = [RRCoordCover convertGCJ02ToBD:coor];
+        coor           = [PYCoordCover convertGCJ02ToBD:coor];
         BMKMapPoint pt = BMKMapPointForCoordinate(coor);
         temppoints[i].x = pt.x;
         temppoints[i].y = pt.y;
@@ -217,14 +217,16 @@ typedef NS_ENUM (NSUInteger, BMKAnonotationType) {
     BMKPolygon *overlay = [BMKPolygon polygonWithPoints:temppoints count:coordinates.count];
     overlay._uid_ = uid;
 
-    NSDictionary *dicInfo = [NSDictionary dictionaryWithObjectsAndKeys:strokeColor, @"strokeColor"
-                             , fillColor, @"fillColor"
-                             , @(lineWidth), @"lineWidth"
-                             , @"Polygon", @"shape"
-                             , overlay, @"view"
-                             , nil];
-
-    [_overlayInfo setObject:dicInfo forKey:uid];
+    
+    PYShapeInfo* shapeInfo = [PYShapeInfo new];
+    shapeInfo.strokeColor = strokeColor;
+    shapeInfo.fillColor = fillColor;
+    shapeInfo.lineWidth = lineWidth;
+    shapeInfo.shape = overlay;
+    shapeInfo.shapeType = ShapeType_Polygon;
+    
+    [_shapeCache setObject:shapeInfo forKey:uid];
+    
 
     [_mapView addOverlay:overlay];
     delete temppoints;
@@ -243,8 +245,8 @@ typedef NS_ENUM (NSUInteger, BMKAnonotationType) {
         CLLocation *loc = [coordinates objectAtIndex:i];
         NSAssert([loc isKindOfClass:[CLLocation class]], @"Coordinate is CLLocation Object");
 
-        CLLocationCoordinate2D coor  = [RRCoordCover convertGCJ02ToBD:loc.coordinate];
-        BMKMapPoint pt = BMKMapPointForCoordinate(coor);
+        CLLocationCoordinate2D coor = [PYCoordCover convertGCJ02ToBD:loc.coordinate];
+        BMKMapPoint            pt   = BMKMapPointForCoordinate(coor);
         temppoints[i].x = pt.x;
         temppoints[i].y = pt.y;
     }
@@ -252,17 +254,25 @@ typedef NS_ENUM (NSUInteger, BMKAnonotationType) {
     BMKPolyline *line = [BMKPolyline polylineWithPoints:temppoints count:coordinates.count];
     line._uid_ = uid;
 
-    NSDictionary *dicInfo = [NSDictionary dictionaryWithObjectsAndKeys
-                             :strokeColor, @"strokeColor"
-                             , @(lineWidth), @"lineWidth"
-                             , @"Polyline", @"shape"
-                             , line, @"view"
-                             , nil];
-
-    [_overlayInfo setObject:dicInfo forKey:uid];
+    PYShapeInfo* shapeInfo = [PYShapeInfo new];
+    shapeInfo.strokeColor = strokeColor;
+    shapeInfo.lineWidth = lineWidth;
+    shapeInfo.shape = line;
+    shapeInfo.shapeType = ShapeType_Line;
+    
+    [_shapeCache setObject:shapeInfo forKey:uid];
 
     [_mapView addOverlay:line];
     delete temppoints;
+}
+
+
+/*!
+ *  @brief  移除覆线路图
+ */
+- (void)removeRouteView:(NSString *)uid
+{
+    [self removeOverlayView:uid];
 }
 
 
@@ -307,7 +317,7 @@ typedef NS_ENUM (NSUInteger, BMKAnonotationType) {
  */
 - (void)setCenterCoordinate:(CLLocationCoordinate2D)coordinate zoomLevel:(double)newZoomLevel animated:(BOOL)animated
 {
-    CLLocationCoordinate2D center = [RRCoordCover convertGCJ02ToBD:coordinate];
+    CLLocationCoordinate2D center = [PYCoordCover convertGCJ02ToBD:coordinate];
 
     [_mapView setCenterCoordinate:center];
     [_mapView setZoomLevel:newZoomLevel];
@@ -322,14 +332,14 @@ typedef NS_ENUM (NSUInteger, BMKAnonotationType) {
 }
 
 
-- (RRCoordinateRegion)getMapRegion
+- (PYCoordinateRegion)getMapRegion
 {
-    CLLocationCoordinate2D center = [RRCoordCover convertBDToGCJ02:_mapView.region.center];
+    CLLocationCoordinate2D center = [PYCoordCover convertBDToGCJ02:_mapView.region.center];
 
-    RRCoordinateSpan span = RRCoordinateSpanMake(_mapView.region.span.latitudeDelta,
+    PYCoordinateSpan span = PYCoordinateSpanMake(_mapView.region.span.latitudeDelta,
                                                  _mapView.region.span.longitudeDelta);
 
-    RRCoordinateRegion region = RRCoordinateRegionMake(center,
+    PYCoordinateRegion region = PYCoordinateRegionMake(center,
                                                        span);
 
     return region;
@@ -350,24 +360,30 @@ typedef NS_ENUM (NSUInteger, BMKAnonotationType) {
         BMKShape *shape = (BMKShape *)overlay;
         NSString *uid   = shape._uid_;
 
-        NSDictionary *dic = [_overlayInfo objectForKey:uid];
-        if (dic && [[dic objectForKey:@"shape"] isEqualToString:@"Polygon"]) {
+       PYShapeInfo *shapeInfo = [_shapeCache objectForKey:uid];
+        
+        //添加多边形
+        if (shapeInfo && ShapeType_Polygon == shapeInfo.shapeType) {
+            
             BMKPolygonView *cutomView = [[BMKPolygonView alloc] initWithOverlay:overlay];
-
-            cutomView.strokeColor = [dic objectForKey:@"strokeColor"];
-            cutomView.fillColor   = [dic objectForKey:@"fillColor"];
-            cutomView.lineWidth   = [[dic objectForKey:@"lineWidth"] floatValue];
-
+            
+            cutomView.strokeColor = shapeInfo.strokeColor;
+            cutomView.fillColor   = shapeInfo.fillColor;
+            cutomView.lineWidth   = shapeInfo.lineWidth;
+            
             return cutomView;
-        } else if (dic && [[dic objectForKey:@"shape"] isEqualToString:@"Polyline"]) {
+            
+            ///添加线条
+        }else if (shapeInfo && ShapeType_Line == shapeInfo.shapeType){
+            
             BMKPolylineView *cutomView = [[BMKPolylineView alloc] initWithOverlay:overlay];
-
-            cutomView.strokeColor = [dic objectForKey:@"strokeColor"];
-            cutomView.lineWidth   = [[dic objectForKey:@"lineWidth"] floatValue];
-
+            
+            cutomView.strokeColor = shapeInfo.strokeColor;
+            cutomView.lineWidth   = shapeInfo.lineWidth;
+            
             return cutomView;
         }
-
+        
         return nil;
     }
 
@@ -379,21 +395,23 @@ typedef NS_ENUM (NSUInteger, BMKAnonotationType) {
 - (BMKAnnotationView *)mapView:(BMKMapView *)mapView viewForAnnotation:(id <BMKAnnotation>)annotation
 {
     if ([annotation isKindOfClass:[BMKPointAnnotation class]]) {
-        BMKPointAnnotation *pointAnnotation = (BMKPointAnnotation *)annotation;
+        BMKPointAnnotation *pointAnnotation = annotation;
         NSString           *uid             = pointAnnotation._uid_;
 
-        RRBaiduImageAnnotation *annotationView = (RRBaiduImageAnnotation *)[mapView dequeueReusableAnnotationViewWithIdentifier:uid];
+        PYAnnotationInfo *annotationSave = [_annotationCache objectForKey:uid];
+        NSString         *reuseId        = annotationSave.uid;
+
+        PYBaiduImageAnnotation *annotationView = (PYBaiduImageAnnotation *)[mapView dequeueReusableAnnotationViewWithIdentifier:reuseId];
 
         if (annotationView == nil) {
-            annotationView = [[RRBaiduImageAnnotation alloc] initWithAnnotation:annotation reuseIdentifier:uid];
+            annotationView = [[PYBaiduImageAnnotation alloc] initWithAnnotation:annotation reuseIdentifier:reuseId];
         }
 
-        RRPointAnnotationSave *annotationSave = [_annotationInfo objectForKey:uid];
         annotationView.other = uid;
 
         //动画annotation
-        if ([self.mapDelegate respondsToSelector:@selector(rrMap:viewForAnnotationId:)]) {
-            UIView *showView = [self.mapDelegate rrMap:self viewForAnnotationId:uid];
+        if ([self.mapDelegate respondsToSelector:@selector(pyMap:viewForAnnotationWithId:)]) {
+            UIView *showView = [self.mapDelegate pyMap:self viewForAnnotationWithId:uid];
             if (nil == showView) return nil;
 
             [annotationView setShowView:showView];
@@ -404,11 +422,9 @@ typedef NS_ENUM (NSUInteger, BMKAnonotationType) {
             annotationView.image = [UIImage imageNamed:imageName];
         }
 
-        if (annotationSave.type == BMKAnonotationType_Callout) {
-            if (self.annotationCalloutViewWithUid) {
-                UIView *calloutView = self.annotationCalloutViewWithUid(uid);
-                [annotationView changeCalloutView:calloutView];
-            }
+        if ([_mapDelegate respondsToSelector:@selector(pyMap:calloutViewForAnnotationWithId:)]) {
+            UIView *calloutView = [_mapDelegate pyMap:self calloutViewForAnnotationWithId:uid];
+            [annotationView changeCalloutView:calloutView];
         }
 
         return annotationView;
@@ -420,71 +436,74 @@ typedef NS_ENUM (NSUInteger, BMKAnonotationType) {
 
 - (void)mapView:(BMKMapView *)mapView didSelectAnnotationView:(BMKAnnotationView *)view
 {
-    if (![view isKindOfClass:[RRBaiduImageAnnotation class]]) return;
+    if (![view isKindOfClass:[PYBaiduImageAnnotation class]]) return;
 
-    if (self.annotationSelectAtUid) {
-        self.annotationSelectAtUid(((RRBaiduImageAnnotation *)view).other);
+    if ([_mapDelegate respondsToSelector:@selector(pyMap:annotationSelectAtUid:)]) {
+        [_mapDelegate pyMap:self annotationSelectAtUid:((PYBaiduImageAnnotation *)view).other];
     }
 }
 
 
 - (void)mapView:(BMKMapView *)mapView didDeselectAnnotationView:(BMKAnnotationView *)view
 {
-    if (![view isKindOfClass:[RRBaiduImageAnnotation class]]) return;
+    if (![view isKindOfClass:[PYBaiduImageAnnotation class]]) return;
 
-    if (self.annotationDeSelectAtUid) {
-        self.annotationDeSelectAtUid(((RRBaiduImageAnnotation *)view).other);
+    if ([_mapDelegate respondsToSelector:@selector(pyMap:annotationDeSelectAtUid:)]) {
+        [_mapDelegate pyMap:self annotationDeSelectAtUid:((PYBaiduImageAnnotation *)view).other];
     }
 }
 
 
 - (void)mapView:(BMKMapView *)mapView regionDidChangeAnimated:(BOOL)animated
 {
-    CLLocationCoordinate2D center = [RRCoordCover convertGCJ02ToBD:_mapView.region.center];
+    CLLocationCoordinate2D center = [PYCoordCover convertGCJ02ToBD:_mapView.region.center];
 
-    RRCoordinateSpan span = RRCoordinateSpanMake(mapView.region.span.latitudeDelta,
+    PYCoordinateSpan span = PYCoordinateSpanMake(mapView.region.span.latitudeDelta,
                                                  mapView.region.span.longitudeDelta);
 
-    RRCoordinateRegion region = RRCoordinateRegionMake(center,
+    PYCoordinateRegion region = PYCoordinateRegionMake(center,
                                                        span);
 
-    if ([_mapDelegate respondsToSelector:@selector(rrMap:regionDidChangeTo:withAnimated:)]) {
-        [_mapDelegate rrMap:self regionDidChangeTo:region withAnimated:animated];
+    if ([_mapDelegate respondsToSelector:@selector(pyMap:regionDidChangeTo:withAnimated:)]) {
+        [_mapDelegate pyMap:self regionDidChangeTo:region withAnimated:animated];
     }
 
-    if ([_mapDelegate respondsToSelector:@selector(rrMap:regionDidChangeTo:)]) {
-        [_mapDelegate rrMap:self regionDidChangeTo:region];
+    if ([_mapDelegate respondsToSelector:@selector(pyMap:regionDidChangeTo:withAnimated:)]) {
+        [_mapDelegate pyMap:self regionDidChangeTo:region withAnimated:animated];
     }
 }
 
 
 - (void)mapView:(BMKMapView *)mapView regionWillChangeAnimated:(BOOL)animated
 {
-    if (![_mapDelegate respondsToSelector:@selector(rrMap:regionWillChangeFrom:withAnimated:)]) return;
+    if (![_mapDelegate respondsToSelector:@selector(pyMap:regionWillChangeFrom:withAnimated:)]) return;
 
-    CLLocationCoordinate2D center = [RRCoordCover convertGCJ02ToBD:_mapView.region.center];
+    CLLocationCoordinate2D center = [PYCoordCover convertGCJ02ToBD:_mapView.region.center];
 
-    RRCoordinateSpan span = RRCoordinateSpanMake(mapView.region.span.latitudeDelta,
+    PYCoordinateSpan span = PYCoordinateSpanMake(mapView.region.span.latitudeDelta,
                                                  mapView.region.span.longitudeDelta);
 
-    RRCoordinateRegion region = RRCoordinateRegionMake(center,
+    PYCoordinateRegion region = PYCoordinateRegionMake(center,
                                                        span);
 
-    [_mapDelegate rrMap:self regionWillChangeFrom:region withAnimated:animated];
+    [_mapDelegate pyMap:self regionWillChangeFrom:region withAnimated:animated];
 }
 
 
 - (void)removeAnnotations
 {
     [_mapView removeAnnotations:_mapView.annotations];
-    [_annotationInfo removeAllObjects];
+    [_annotationCache removeAllObjects];
 }
 
 
 - (void)removeOverlayView:(NSString *)uid
 {
-    [_mapView removeOverlay:[[_overlayInfo objectForKey:uid] objectForKey:@"view"]];
-    [_overlayInfo removeObjectForKey:uid];
+    BMKShape* shape = [_shapeCache objectForKey:uid].shape;
+    if ([shape conformsToProtocol:@protocol(BMKOverlay)]) {
+        [_mapView removeOverlay:(id <BMKOverlay>)shape];
+        [_shapeCache removeObjectForKey:uid];
+    }
 }
 
 
@@ -493,22 +512,12 @@ typedef NS_ENUM (NSUInteger, BMKAnonotationType) {
     for (BMKPointAnnotation *aAnnotation in _mapView.annotations) {
         if (![aAnnotation isKindOfClass:[BMKPointAnnotation class]]) continue;
 
-        RRPointAnnotationSave *annotationSave = [_annotationInfo objectForKey:aAnnotation._uid_];
-        if (annotationSave.type != BMKAnonotationType_Callout) continue;
+        PYBaiduImageAnnotation *annotationView = (PYBaiduImageAnnotation *)[_mapView viewForAnnotation:aAnnotation];
+        if (![annotationView isKindOfClass:[PYBaiduImageAnnotation class]]) continue;
 
-        RRBaiduImageAnnotation *annotationView = (RRBaiduImageAnnotation *)[_mapView viewForAnnotation:aAnnotation];
-        if (![annotationView isKindOfClass:[RRBaiduImageAnnotation class]]) continue;
-
-        if (self.annotationCalloutViewWithUid) {
-            UIView *calloutView = self.annotationCalloutViewWithUid(aAnnotation._uid_);
+        if ([_mapDelegate respondsToSelector:@selector(pyMap:calloutViewForAnnotationWithId:)]) {
+            UIView *calloutView = [_mapDelegate pyMap:self calloutViewForAnnotationWithId:aAnnotation._uid_];
             [annotationView changeCalloutView:calloutView];
-        }
-
-        if (self.annotationImageWithUid) {
-            UIImage *image = self.annotationImageWithUid(aAnnotation._uid_);
-            if (image) {
-                annotationView.image = image;
-            }
         }
     }
 }
@@ -516,8 +525,12 @@ typedef NS_ENUM (NSUInteger, BMKAnonotationType) {
 
 @end
 
+@implementation PYAnnotationInfo
 
-@implementation RRPointAnnotationSave
+@end
+
+
+@implementation PYShapeInfo
 
 @end
 

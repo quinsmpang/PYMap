@@ -10,14 +10,14 @@
 #define prefix_h
 
 
-//#define _Map_Baidu
+#define _Map_Baidu
 
 
 //#define _Map_Tencent
 
 
 
-#define _Map_MA
+//#define _Map_MA
 
 
 #endif /* prefix_h */

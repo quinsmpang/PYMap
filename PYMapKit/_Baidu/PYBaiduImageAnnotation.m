@@ -1,5 +1,5 @@
 //
-//  RRBaiduImageAnnotation.m
+//  PYBaiduImageAnnotation.m
 //  YR
 //
 //  Created by YR on 15-4-28.
@@ -7,9 +7,9 @@
 //
 #ifdef _Map_Baidu
 
-#import "RRBaiduImageAnnotation.h"
+#import "PYBaiduImageAnnotation.h"
 
-@implementation RRBaiduImageAnnotation{
+@implementation PYBaiduImageAnnotation{
     UIView* _curCallOutView;
     UIView* _showView;
 }
@@ -37,12 +37,8 @@
     
     [self addSubview:view];
     
-    [_curCallOutView makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(self);
-        make.bottom.equalTo(self.top);
-        make.size.equalTo(_curCallOutView.bounds.size);
-        
-    }];
+    view.center = CGPointMake(CGRectGetMidX(self.bounds),
+                              -CGRectGetMidY(view.bounds));
     
 }
 
@@ -56,9 +52,7 @@
     [self setBounds:view.bounds];
     [self addSubview:view];
     
-    [_showView makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self);
-    }];
+    view.center = self.center;
 }
 
 @end

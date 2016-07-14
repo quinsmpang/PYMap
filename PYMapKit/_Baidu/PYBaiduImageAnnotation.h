@@ -1,5 +1,5 @@
 //
-//  RRBaiduImageAnnotation.h
+//  PYBaiduImageAnnotation.h
 //  YR
 //
 //  Created by YR on 15-4-28.
@@ -9,7 +9,7 @@
 #import <BaiduMapAPI_Map/BMKAnnotationView.h>
 #import <BaiduMapAPI_Map/BMKAnnotation.h>
 
-@interface RRBaiduImageAnnotation : BMKAnnotationView
+@interface PYBaiduImageAnnotation : BMKAnnotationView
 @property (nonatomic, strong) NSString* other; //相当于tag
 /**
  *  改变泡泡视图

@@ -160,7 +160,7 @@
                        uid:(NSString *)uid;
 
 /*!
- *  @brief  移除覆盖视图
+ *  @brief  移除覆线路图
  */
 - (void)removeRouteView:(NSString *)uid;
 

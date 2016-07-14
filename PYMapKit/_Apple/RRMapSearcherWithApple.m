@@ -1,5 +1,5 @@
 //
-//  RRMapSearchServiceWithMA.m
+//  PYMapSearchServiceWithMA.m
 //  YR
 //
 //  Created by YR on 15/10/16.
@@ -8,23 +8,23 @@
 
 #ifdef _Map_MA
 
-#import "RRMapSearcherWithMA.h"
+#import "PYMapSearcherWithMA.h"
 #import <MAMapKit/MAMapKit.h>
 
-@interface RRMapSearcherWithMA () <AMapSearchDelegate>
+@interface PYMapSearcherWithMA () <AMapSearchDelegate>
 
 @end
 
-@implementation RRMapSearcherWithMA {
+@implementation PYMapSearcherWithMA {
     AMapSearchAPI *_mapSearcher;
 
-    RRMapSearchErrorCB                         _errorCB;
-    RRMapSearchKeywordCompleteCB               _kwcompleteCB;
-    RRMapSearchWalkRouteCompleteCB             _wrCompleteCB;
-    RRMapSearchDriveRouteCompleteCB            _driCompleteCB;
-    RRMapSearchBusRouteCompleteCB              _busCompleteCB;
-    RRMapSearchCoordinateFromCityCompleteCB    _cfcCompleteCB;
-    RRMapSearchAddressFromCoordinateCompleteCB _afcCompleteCB;
+    PYMapSearcherrorCB                         _errorCB;
+    PYMapSearchKeywordCompleteCB               _kwcompleteCB;
+    PYMapSearchWalkRouteCompleteCB             _wrCompleteCB;
+    PYMapSearchDriveRouteCompleteCB            _driCompleteCB;
+    PYMapSearchBusRouteCompleteCB              _busCompleteCB;
+    PYMapSearchCoordinateFromCityCompleteCB    _cfcCompleteCB;
+    PYMapSearchAddressFromCoordinateCompleteCB _afcCompleteCB;
 }
 
 - (instancetype)init
@@ -176,46 +176,46 @@
 
 
 /*设置检索成功后的回调函数*/
-- (void)setSearchKeywordComplete:(RRMapSearchKeywordCompleteCB)completeCB;
+- (void)setSearchKeywordComplete:(PYMapSearchKeywordCompleteCB)completeCB;
 {
     _kwcompleteCB = [completeCB copy];
 }
 /*设置检索成功后的回调函数*/
-- (void)setSearchWalkRouteComplete:(RRMapSearchWalkRouteCompleteCB)completeCB
+- (void)setSearchWalkRouteComplete:(PYMapSearchWalkRouteCompleteCB)completeCB
 {
     _wrCompleteCB = [completeCB copy];
 }
 
 
 /*设置检索驾车路线成功后的回调函数*/
-- (void)setSearchDriveRouteComplete:(RRMapSearchDriveRouteCompleteCB)completeCB
+- (void)setSearchDriveRouteComplete:(PYMapSearchDriveRouteCompleteCB)completeCB
 {
     _driCompleteCB = [completeCB copy];
 }
 
 
 /*设置检索公交成功后的回调函数*/
-- (void)setSearchBusRouteComplete:(RRMapSearchBusRouteCompleteCB)completeCB
+- (void)setSearchBusRouteComplete:(PYMapSearchBusRouteCompleteCB)completeCB
 {
     _busCompleteCB = [completeCB copy];
 }
 
 
 /*设置检索成功后的回调函数*/
-- (void)setSearchCoordinateFromCityComplete:(RRMapSearchCoordinateFromCityCompleteCB)completeCB
+- (void)setSearchCoordinateFromCityComplete:(PYMapSearchCoordinateFromCityCompleteCB)completeCB
 {
     _cfcCompleteCB = [completeCB copy];
 }
 
 
-- (void)setSearchAddressFromCoordinateComplete:(RRMapSearchAddressFromCoordinateCompleteCB)completeCB
+- (void)setSearchAddressFromCoordinateComplete:(PYMapSearchAddressFromCoordinateCompleteCB)completeCB
 {
     _afcCompleteCB = [completeCB copy];
 }
 
 
 ///*设置检索失败后的回调函数*/
-- (void)setError:(RRMapSearchErrorCB)errCB
+- (void)setError:(PYMapSearcherrorCB)errCB
 {
     _errorCB = [errCB copy];
 }

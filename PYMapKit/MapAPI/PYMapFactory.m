@@ -97,7 +97,7 @@
 +(void)appWillResignActive{
     
 #ifdef _Map_Baidu
-    [BMKMapView willBackGround];
+//    [BMKMapView willBackGround];
 #endif
 }
 
@@ -107,7 +107,7 @@
 +(void)appDidBecomeActive{
     
 #ifdef _Map_Baidu
-    [BMKMapView didForeGround];
+//    [BMKMapView didForeGround];
 #endif
 }
 

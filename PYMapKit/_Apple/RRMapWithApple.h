@@ -1,5 +1,5 @@
 //
-//  RRMapWithMA.h
+//  PYMapWithMA.h
 //
 //  Created by YR on 15/8/19.
 //  Copyright (c) 2015年 MA. All rights reserved.
@@ -9,6 +9,6 @@
 #import "RRMapKit.h"
 #import <MapKit/MapKit.h>
 
-@interface RRMapWithApple : NSObject<RRMapKitProtocal>
+@interface PYMapWithApple : NSObject<RRMapKitProtocal>
 
 @end

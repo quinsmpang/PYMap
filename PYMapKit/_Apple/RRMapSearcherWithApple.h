@@ -1,5 +1,5 @@
 //
-//  RRMapSearchServiceWithMA.h
+//  PYMapSearchServiceWithMA.h
 //  YR
 //
 //  Created by YR on 15/10/16.
@@ -8,9 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import <AMapSearchKit/AMapSearchKit.h>
-#import "RRMapSearchServiceKit.h"
+#import "PYMapSearchServiceKit.h"
 
 
-@interface RRMapSearcherWithMA : NSObject <RRMapSearcherProtocal>
+@interface PYMapSearcherWithMA : NSObject <PYMapSearcherProtocal>
 
 @end

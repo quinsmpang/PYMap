@@ -239,7 +239,7 @@ typedef NS_ENUM(NSUInteger, ShapeType) {
     shapeInfo.strokeColor = strokeColor;
     shapeInfo.lineWidth = lineWidth;
     shapeInfo.shape = line;
-    shapeInfo.shapeType = ShapeType_Polygon;
+    shapeInfo.shapeType = ShapeType_Line;
     
     [_shapeCache setObject:shapeInfo forKey:uid];
 
