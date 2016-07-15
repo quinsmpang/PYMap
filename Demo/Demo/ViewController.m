@@ -7,8 +7,12 @@
 //
 
 #import "ViewController.h"
+#import "PYMapFactory.h"
 
-@interface ViewController ()
+@interface ViewController (){
+
+    id <PYMapKitProtocal> _map;
+}
 
 @end
 
@@ -16,12 +20,15 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    
+    _map = [PYMapFactory createMap];
+    
+    [_map setRegion:PYCoordinateRegionMake(CLLocationCoordinate2DMake(30.653605f,104.050807f),
+                                           PYCoordinateSpanMake(0.0001, 0.0001))
+           animated:YES];
+    
+    self.view = [_map mapView];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
 @end

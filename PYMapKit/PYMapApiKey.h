@@ -16,7 +16,7 @@
 #define PYMapApiKey_h
 
 #ifdef _Map_Baidu
-#define PYMapApiKey  @"TH78pXAWjeWDcLGXPdZQuFsA"
+#define PYMapApiKey  @"GDXkDhEI4lBrjeCOljkmB8HcKSyGQW8g"
 #endif
 
 #ifdef _Map_Tencent

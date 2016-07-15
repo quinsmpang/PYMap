@@ -187,12 +187,12 @@
 				9A3D6A1B1D24EED3002C5665 /* _Baidu */,
 				9A3D6A241D24EED3002C5665 /* _MA */,
 				9A3D6A2D1D24EED3002C5665 /* _Tencent */,
-				9A3D6A361D24EED3002C5665 /* MapAPI */,
 				9A3D6A3D1D24EED3002C5665 /* PYCoordCover.h */,
 				9A3D6A3E1D24EED3002C5665 /* PYCoordCover.m */,
 				9A3D6A3F1D24EED3002C5665 /* PYMapApiKey.h */,
 				9A3D6A401D24EED3002C5665 /* PYMapGeometry.h */,
 				9A3D6A411D24EED3002C5665 /* PYMapUtil.h */,
+				9A3D6A361D24EED3002C5665 /* MapAPI */,
 				9A3D6A421D24EED3002C5665 /* SearchAPI */,
 			);
 			name = PYMapKit;
@@ -290,12 +290,6 @@
 		9A4953A31CD1B26C004CB354 = {
 			isa = PBXGroup;
 			children = (
-				9A4411AC1D378C420004954D /* libstdc++.6.0.9.tbd */,
-				9A4411AA1D378C130004954D /* QuartzCore.framework */,
-				9A4411A81D378BEA0004954D /* OpenGLES.framework */,
-				9A4411A61D378BDB0004954D /* Security.framework */,
-				9A4411A41D378BC40004954D /* libstdc++.tbd */,
-				9A44119F1D378B710004954D /* libsqlite3.0.tbd */,
 				9A4953AE1CD1B26C004CB354 /* Demo */,
 				9A4953AD1CD1B26C004CB354 /* Products */,
 			);
@@ -366,6 +360,12 @@
 		9A4954181CD1EB5C004CB354 /* framework */ = {
 			isa = PBXGroup;
 			children = (
+				9A4411AC1D378C420004954D /* libstdc++.6.0.9.tbd */,
+				9A4411AA1D378C130004954D /* QuartzCore.framework */,
+				9A4411A81D378BEA0004954D /* OpenGLES.framework */,
+				9A4411A61D378BDB0004954D /* Security.framework */,
+				9A4411A41D378BC40004954D /* libstdc++.tbd */,
+				9A44119F1D378B710004954D /* libsqlite3.0.tbd */,
 				9A49542B1CD1ED2A004CB354 /* libz.tbd */,
 				9A4954291CD1ED06004CB354 /* CoreTelephony.framework */,
 				9A4954271CD1ECD9004CB354 /* SystemConfiguration.framework */,
@@ -592,8 +592,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = prefix.pch;
 				INFOPLIST_FILE = Demo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = yr.Demo;
+				PRODUCT_BUNDLE_IDENTIFIER = py.Demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -609,8 +610,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = prefix.pch;
 				INFOPLIST_FILE = Demo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = yr.Demo;
+				PRODUCT_BUNDLE_IDENTIFIER = py.Demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

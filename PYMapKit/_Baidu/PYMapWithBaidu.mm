@@ -76,6 +76,7 @@ typedef NS_ENUM (NSUInteger, ShapeType) {
 
 - (UIView *)mapView
 {
+    [_mapView viewWillAppear];
     return _mapView;
 }
 

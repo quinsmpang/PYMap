@@ -35,18 +35,4 @@
 +(void)end:(id)manager;
 
 
-/**
- *  应用丢失活跃状态时调用
- *  放在UIApplicationDelegate启动回调里(applicationWillResignActive:)
- */
-+(void)appWillResignActive;
-
-/**
- *  应用变为活跃状态时候调用
- *  放在UIApplicationDelegate启动回调里(applicationWillResignActive:)
- */
-+(void)appDidBecomeActive;
-
-
-
 @end

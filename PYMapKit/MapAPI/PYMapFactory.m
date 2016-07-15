@@ -17,7 +17,6 @@
 #import "PYMapWithTencent.h"
 #endif
 
-
 #ifdef _Map_MA
 #import "PYMapWithMA.h"
 #endif
@@ -72,10 +71,10 @@
  *  需在开始使用前调用
  */
 +(id)start{
-
+    
     NSString* key = PYMapApiKey;
 
-    return  [PYMapFactory setApiKey:key delegate:self];
+    return  [PYMapFactory setApiKey:key delegate:nil];
 }
 
 
@@ -90,25 +89,5 @@
 #endif
 }
 
-
-/**
- *  应用丢失活跃状态时调用
- */
-+(void)appWillResignActive{
-    
-#ifdef _Map_Baidu
-//    [BMKMapView willBackGround];
-#endif
-}
-
-/**
- *  应用变为活跃状态时候调用
- */
-+(void)appDidBecomeActive{
-    
-#ifdef _Map_Baidu
-//    [BMKMapView didForeGround];
-#endif
-}
 
 @end
